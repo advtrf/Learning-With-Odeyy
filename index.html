@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Learning with Odey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --vellum: #F6F1E4;
+    --ink: #2C3B22;
+    --ink-soft: #5F7050;
+    --herbarium: #4B5D3A;
+    --brass: #A9804C;
+    --indigo: #3C4A52;
+    --rust: #A6572E;
+    --maroon: #6B3F4B;
+    --hairline: rgba(44,59,34,0.18);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Source Serif 4', serif;
+    display: flex;
+    justify-content: center;
+    padding: 48px 24px 96px;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 680px;
+    position: relative;
+  }
+
+  .botanical {
+    position: absolute;
+    stroke: var(--herbarium);
+    fill: none;
+    stroke-width: 1.1;
+    opacity: 0.28;
+    pointer-events: none;
+  }
+
+  .botanical.corner-tl { top: -20px; left: -56px; width: 130px; }
+  .botanical.corner-br { bottom: 10px; right: -60px; width: 140px; transform: rotate(180deg); }
+
+  .hero { position: relative; }
+
+  .sprig {
+    stroke: var(--brass);
+    fill: none;
+    stroke-width: 1.1;
+    opacity: 0.6;
+  }
+
+  .sprig.left { position: absolute; left: 8px; top: 34px; width: 46px; }
+  .sprig.right { position: absolute; right: 8px; top: 34px; width: 46px; transform: scaleX(-1); }
+
+  header.site-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .odey-mark {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.odey-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+  .wordmark {
+    font-family: 'Source Serif 4', serif;
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+
+  .placeholder-note {
+    margin-left: auto;
+    font-size: 11px;
+    font-style: italic;
+    color: var(--ink-soft);
+    opacity: 0.7;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 64px 0 40px;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.15;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero p {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 17px;
+    margin: 0;
+  }
+
+  .plate {
+    margin: 8px 0 4px;
+    padding: 14px;
+    border: 1px double var(--hairline);
+    background: var(--vellum);
+  }
+
+  .plate img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: sepia(0.35) saturate(0.85) contrast(1.02);
+  }
+
+  .plate figcaption {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 12.5px;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .plate figcaption .fig-label {
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    font-style: normal;
+  }
+
+  nav.index-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .index-item {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    padding: 22px 4px;
+    border-bottom: 1px solid var(--hairline);
+    text-decoration: none;
+    color: var(--ink);
+    transition: padding-left 0.15s ease;
+    --accent: var(--herbarium);
+  }
+
+  .index-item:hover {
+    padding-left: 10px;
+  }
+
+  .index-item:hover .label { color: var(--accent); }
+
+  .index-item.materi   { --accent: var(--herbarium); }
+  .index-item.quiz     { --accent: var(--rust); }
+  .index-item.tugas    { --accent: var(--indigo); }
+  .index-item.ask-odey { --accent: var(--brass); }
+  .index-item.tentang  { --accent: var(--maroon); }
+
+  .index-item .numeral {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--accent);
+    width: 34px;
+    flex-shrink: 0;
+  }
+
+  .index-item .label-block { flex: 1; }
+
+  .index-item .label {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2px;
+    transition: color 0.15s ease;
+  }
+
+  .index-item .caption {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  footer.page-footer {
+    text-align: center;
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  footer.page-footer .tagline {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+
+  footer.page-footer .credit {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  footer.page-footer .credit a {
+    color: var(--herbarium);
+    text-decoration: none;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  footer.page-footer .credit a:hover {
+    color: var(--brass);
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <svg class="botanical corner-tl" viewBox="0 0 130 160" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 5 C 30 30, 20 70, 45 90 C 65 106, 60 130, 80 150"/>
+      <path d="M20 25 C 32 20, 40 28, 36 40 C 30 50, 18 46, 20 25 Z"/>
+      <path d="M38 55 C 52 50, 60 58, 54 70 C 47 80, 34 74, 38 55 Z"/>
+      <path d="M58 88 C 72 84, 80 92, 73 103 C 66 112, 54 107, 58 88 Z"/>
+    </svg>
+
+    <svg class="botanical corner-br" viewBox="0 0 130 160" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 5 C 30 30, 20 70, 45 90 C 65 106, 60 130, 80 150"/>
+      <path d="M20 25 C 32 20, 40 28, 36 40 C 30 50, 18 46, 20 25 Z"/>
+      <path d="M38 55 C 52 50, 60 58, 54 70 C 47 80, 34 74, 38 55 Z"/>
+      <path d="M58 88 C 72 84, 80 92, 73 103 C 66 112, 54 107, 58 88 Z"/>
+    </svg>
+
+    <header class="site-header">
+      <div class="odey-mark">
+        <img src="assets/odey.png" alt="Odey" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+      </div>
+      <span class="wordmark">Learning with Odey</span>
+    </header>
+
+    <div class="hero">
+      <svg class="sprig left" viewBox="0 0 46 30" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 15 C 15 15, 28 15, 44 15"/>
+        <path d="M12 15 C 12 9, 17 7, 20 10 C 20 15, 15 16, 12 15 Z"/>
+        <path d="M22 15 C 22 21, 27 23, 30 20 C 30 15, 25 14, 22 15 Z"/>
+        <path d="M32 15 C 32 9, 37 7, 40 10 C 40 15, 35 16, 32 15 Z"/>
+      </svg>
+      <h1>Keanekaragaman Hayati</h1>
+      <svg class="sprig right" viewBox="0 0 46 30" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 15 C 15 15, 28 15, 44 15"/>
+        <path d="M12 15 C 12 9, 17 7, 20 10 C 20 15, 15 16, 12 15 Z"/>
+        <path d="M22 15 C 22 21, 27 23, 30 20 C 30 15, 25 14, 22 15 Z"/>
+        <path d="M32 15 C 32 9, 37 7, 40 10 C 40 15, 35 16, 32 15 Z"/>
+      </svg>
+      <p>sebuah panduan interaktif</p>
+    </div>
+
+    <hr class="divider">
+
+    <figure class="plate">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Malay_Archipelago_Bird_of_Paradise_shooting.jpg" alt="Ilustrasi cendrawasih dari The Malay Archipelago karya A.R. Wallace, 1869">
+      <figcaption><span class="fig-label">Fig. 1</span> — Cendrawasih, <em>The Malay Archipelago</em>, A. R. Wallace (1869)</figcaption>
+    </figure>
+
+    <hr class="divider">
+
+    <nav class="index-list">
+      <a class="index-item materi" href="materi.html">
+        <span class="numeral">I.</span>
+        <span class="label-block">
+          <span class="label">Materi</span>
+          <span class="caption">tingkatan keanekaragaman &amp; tipe ekosistem</span>
+        </span>
+      </a>
+      <a class="index-item quiz" href="quiz.html">
+        <span class="numeral">II.</span>
+        <span class="label-block">
+          <span class="label">Quiz</span>
+          <span class="caption">uji pemahaman secara real-time</span>
+        </span>
+      </a>
+      <a class="index-item tugas" href="tugas.html">
+        <span class="numeral">III.</span>
+        <span class="label-block">
+          <span class="label">Box Tugas</span>
+          <span class="caption">kumpulkan tugas &amp; laporan</span>
+        </span>
+      </a>
+      <a class="index-item ask-odey" href="ask-odey.html">
+        <span class="numeral">IV.</span>
+        <span class="label-block">
+          <span class="label">Ask Odey! 🐧</span>
+          <span class="caption">tanya jawab langsung dengan Odey</span>
+        </span>
+      </a>
+      <a class="index-item tentang" href="tentang.html">
+        <span class="numeral">V.</span>
+        <span class="label-block">
+          <span class="label">Tentang Website</span>
+          <span class="caption">latar belakang &amp; penyusun</span>
+        </span>
+      </a>
+    </nav>
+
+    <footer class="page-footer">
+      <p class="tagline">Learning with Odey &mdash; media pembelajaran biologi kelas 10</p>
+      <p class="credit">Disusun oleh Fauzan Ahmad &middot; <a href="mailto:fauzanahmad@upi.edu">fauzanahmad@upi.edu</a></p>
+    </footer>
+
+  </div>
+</body>
+</html>
