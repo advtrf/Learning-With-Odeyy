@@ -1,0 +1,57 @@
+[
+  {
+    "q": "Apa yang dimaksud dengan keanekaragaman hayati?",
+    "options": [
+      "Variasi makhluk hidup pada tingkat gen, spesies, dan ekosistem",
+      "Jumlah total makhluk hidup di suatu wilayah",
+      "Populasi hewan langka yang dilindungi",
+      "Persebaran manusia di berbagai benua"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Selain mutasi dan rekombinasi alami, variasi gen juga dapat muncul melalui campur tangan manusia lewat proses...",
+    "options": [
+      "Fotosintesis dan respirasi",
+      "Hibridisasi dan domestikasi",
+      "Metamorfosis dan regenerasi",
+      "Fermentasi dan oksidasi"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Persilangan antarvarietas atau antarspesies kerabat dekat untuk menghasilkan variasi baru disebut...",
+    "options": ["Domestikasi", "Adaptasi", "Hibridisasi", "Seleksi alam"],
+    "correct": 2
+  },
+  {
+    "q": "Proses menjinakkan dan membudidayakan makhluk liar dalam lingkungan yang terkontrol disebut...",
+    "options": ["Domestikasi", "Hibridisasi", "Konservasi", "Migrasi"],
+    "correct": 0
+  },
+  {
+    "q": "Varietas padi seperti IR64, Ciherang, dan Rojolele adalah contoh keanekaragaman pada tingkat...",
+    "options": ["Ekosistem", "Populasi", "Gen", "Spesies"],
+    "correct": 2
+  },
+  {
+    "q": "Famili kucing (Felidae) yang beragam mulai dari kucing rumah, harimau, hingga singa adalah contoh keanekaragaman pada tingkat...",
+    "options": ["Gen", "Spesies", "Ekosistem", "Habitat"],
+    "correct": 1
+  },
+  {
+    "q": "Keanekaragaman ekosistem terbentuk dari interaksi antara komponen...",
+    "options": [
+      "Produsen dan konsumen saja",
+      "Biotik dan abiotik",
+      "Gen dan kromosom",
+      "Predator dan mangsa saja"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Manakah yang BUKAN termasuk tiga tingkat utama keanekaragaman hayati?",
+    "options": ["Gen", "Spesies", "Ekosistem", "Populasi"],
+    "correct": 3
+  }
+]

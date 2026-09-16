@@ -1,0 +1,52 @@
+[
+  {
+    "q": "Organisme berukuran mikroskopis yang melayang mengikuti arus air disebut...",
+    "options": ["Nekton", "Bentos", "Plankton", "Perifiton"],
+    "correct": 2
+  },
+  {
+    "q": "Organisme yang mampu berenang aktif melawan arus, misalnya ikan dan paus, disebut...",
+    "options": ["Nekton", "Neuston", "Plankton", "Bentos"],
+    "correct": 0
+  },
+  {
+    "q": "Organisme yang hidup di dasar perairan, baik menempel maupun merayap, disebut...",
+    "options": ["Neuston", "Bentos", "Nekton", "Plankton"],
+    "correct": 1
+  },
+  {
+    "q": "Alga yang menempel pada batu atau batang tumbuhan air termasuk kelompok...",
+    "options": ["Perifiton", "Neuston", "Nekton", "Plankton"],
+    "correct": 0
+  },
+  {
+    "q": "Organisme yang hidup atau mengapung tepat di permukaan air, misalnya serangga air, disebut...",
+    "options": ["Bentos", "Perifiton", "Neuston", "Nekton"],
+    "correct": 2
+  },
+  {
+    "q": "Bioma dengan curah hujan tinggi sepanjang tahun dan keanekaragaman hayati tertinggi adalah...",
+    "options": ["Sabana", "Hutan hujan tropis", "Taiga", "Gurun"],
+    "correct": 1
+  },
+  {
+    "q": "Bioma yang didominasi rerumputan dengan curah hujan lebih rendah dari sabana dan hampir tanpa pohon adalah...",
+    "options": ["Padang rumput", "Hutan gugur", "Tundra", "Hutan hujan tropis"],
+    "correct": 0
+  },
+  {
+    "q": "Bioma dengan tanah membeku permanen (permafrost) dan vegetasi rendah seperti lumut adalah...",
+    "options": ["Taiga", "Tundra", "Gurun", "Sabana"],
+    "correct": 1
+  },
+  {
+    "q": "Bioma yang didominasi pohon berdaun jarum (konifer) dengan musim dingin panjang adalah...",
+    "options": ["Taiga", "Hutan gugur", "Sabana", "Padang rumput"],
+    "correct": 0
+  },
+  {
+    "q": "Bioma dengan vegetasi jarang, suhu ekstrem antara siang dan malam, serta curah hujan sangat rendah adalah...",
+    "options": ["Tundra", "Hutan gugur", "Gurun", "Taiga"],
+    "correct": 2
+  }
+]

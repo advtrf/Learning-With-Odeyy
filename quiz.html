@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz — Learning with Odey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EBDA;--paper-light:#FAF5E9;--ink:#2C2416;--ink-soft:#5A5040;--ink-faint:#9A8E7A;
+    --herbarium:#4B5D3A;--herbarium-pale:#DCE4D2;--brass:#A9804C;--brass-light:#D4B060;
+    --indigo:#3C4A52;--rust:#A6572E;--hairline:rgba(44,36,22,0.18);
+    --leather:#3B2A1E;--leather-light:#5A4230;
+    --correct:#4B5D3A;--wrong:#A6572E;
+  }
+  *{box-sizing:border-box;}
+  html{height:100%;}
+  body{
+    margin:0;background:radial-gradient(ellipse at center, #3a352e 0%, #211e19 100%);
+    color:var(--ink);font-family:'Source Serif 4', serif;
+    display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;
+  }
+  .book{
+    width:100%;max-width:620px;background:var(--paper-light);border-radius:6px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.5);overflow:hidden;position:relative;padding-left:20px;
+  }
+  .book::before{
+    content:"";position:absolute;top:0;bottom:0;left:0;width:14px;
+    background:repeating-linear-gradient(180deg, var(--leather) 0 22px, var(--leather-light) 22px 26px);
+    box-shadow:2px 0 12px rgba(0,0,0,0.35) inset;z-index:5;
+  }
+  .page-inner{padding:32px 34px 30px;}
+  .brand-row{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--hairline);}
+  .odey-portrait{width:40px;height:40px;border-radius:50%;background:var(--paper);border:2px solid var(--brass);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+  .odey-portrait img{width:100%;height:100%;object-fit:cover;}
+  .brand-text h1{font-family:'Fraunces', serif;font-size:15px;font-weight:700;margin:0;}
+  .back-link{margin-left:auto;font-size:12.5px;font-style:italic;color:var(--ink-soft);text-decoration:none;border-bottom:1px solid var(--hairline);}
+
+  h2.page-title{font-family:'Fraunces', serif;font-weight:700;font-size:26px;text-align:center;margin:26px 0 4px;}
+  p.page-sub{text-align:center;font-style:italic;color:var(--ink-soft);font-size:13.5px;margin:0 0 24px;}
+
+  /* ===== JOIN VIEW ===== */
+  .join-card{background:var(--paper);border:1px solid var(--hairline);border-radius:8px;padding:24px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;color:var(--ink-soft);margin-bottom:6px;}
+  .field input{
+    width:100%;padding:11px 14px;border:1.5px solid var(--hairline);border-radius:6px;
+    font-family:'Source Serif 4', serif;font-size:15px;background:var(--paper-light);color:var(--ink);
+  }
+  .field input:focus{outline:none;border-color:var(--herbarium);}
+  .field input#roomCodeInput{text-transform:uppercase;letter-spacing:.1em;font-family:'Fraunces', serif;font-size:20px;text-align:center;}
+  .join-btn{
+    width:100%;padding:13px;border:none;border-radius:6px;background:var(--herbarium);color:var(--paper-light);
+    font-family:'Fraunces', serif;font-size:15px;font-weight:600;cursor:pointer;
+  }
+  .join-btn:hover{background:var(--brass);}
+  .join-btn:disabled{opacity:.5;cursor:default;}
+  .join-error{color:var(--rust);font-size:13px;margin-top:10px;text-align:center;}
+  .host-link{text-align:center;margin-top:16px;font-size:12.5px;}
+  .host-link a{color:var(--ink-soft);border-bottom:1px solid var(--hairline);text-decoration:none;}
+
+  /* ===== QUIZ VIEW ===== */
+  .quiz-view{display:none;}
+  .quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12.5px;color:var(--ink-soft);}
+  .timer-bar-track{height:6px;background:var(--hairline);border-radius:99px;overflow:hidden;margin-bottom:20px;}
+  .timer-bar-fill{height:100%;background:var(--herbarium);width:100%;transition:width 1s linear, background .3s;}
+  .timer-bar-fill.urgent{background:var(--rust);}
+
+  .question-text{font-family:'Fraunces', serif;font-size:19px;font-weight:600;line-height:1.4;margin-bottom:20px;}
+  .options-list{display:flex;flex-direction:column;gap:10px;}
+  .option-btn{
+    text-align:left;padding:13px 16px;border:1.5px solid var(--hairline);border-radius:8px;
+    background:var(--paper);font-family:'Source Serif 4', serif;font-size:14.5px;color:var(--ink);
+    cursor:pointer;transition:all .15s;
+  }
+  .option-btn:hover:not(:disabled){border-color:var(--herbarium);background:var(--herbarium-pale);}
+  .option-btn.correct{background:var(--herbarium-pale);border-color:var(--correct);color:var(--correct);}
+  .option-btn.wrong{background:#f7e9e6;border-color:var(--wrong);color:var(--wrong);}
+  .option-btn:disabled{cursor:default;}
+
+  .score-flash{text-align:center;font-family:'Fraunces', serif;font-size:14px;color:var(--ink-soft);margin-top:14px;min-height:20px;}
+
+  /* ===== RESULT VIEW ===== */
+  .result-view{display:none;text-align:center;}
+  .result-view .big-score{font-family:'Fraunces', serif;font-size:52px;font-weight:700;color:var(--herbarium);margin:10px 0;}
+  .result-view p{color:var(--ink-soft);font-size:14px;}
+</style>
+</head>
+<body>
+
+<div class="book">
+<div class="page-inner">
+
+  <div class="brand-row">
+    <div class="odey-portrait"><img src="assets/odey.png" alt="Odey"></div>
+    <div class="brand-text"><h1>Learning with Odey</h1></div>
+    <a class="back-link" href="index.html">&larr; Kembali ke Index</a>
+  </div>
+
+  <!-- ===== JOIN VIEW ===== -->
+  <div id="joinView">
+    <h2 class="page-title">Ikuti Quiz</h2>
+    <p class="page-sub">Masukkan kode dari gurumu untuk mulai</p>
+    <div class="join-card">
+      <div class="field">
+        <label>Nama Kamu</label>
+        <input type="text" id="nameInput" placeholder="Tulis namamu">
+      </div>
+      <div class="field">
+        <label>Kode Room</label>
+        <input type="text" id="roomCodeInput" placeholder="MISAL: A1B2C" maxlength="6">
+      </div>
+      <button class="join-btn" id="joinBtn" onclick="joinSession()">Gabung &amp; Mulai</button>
+      <div class="join-error" id="joinError"></div>
+    </div>
+    <div class="host-link"><a href="quiz-host.html">Saya guru, buat sesi baru &rarr;</a></div>
+  </div>
+
+  <!-- ===== QUIZ VIEW ===== -->
+  <div class="quiz-view" id="quizView">
+    <div class="quiz-meta">
+      <span id="progressLabel">Soal 1/8</span>
+      <span id="scoreLabel">Skor: 0</span>
+    </div>
+    <div class="timer-bar-track"><div class="timer-bar-fill" id="timerBar"></div></div>
+    <div class="question-text" id="questionText"></div>
+    <div class="options-list" id="optionsList"></div>
+    <div class="score-flash" id="scoreFlash"></div>
+  </div>
+
+  <!-- ===== RESULT VIEW ===== -->
+  <div class="result-view" id="resultView">
+    <h2 class="page-title">Selesai!</h2>
+    <p class="page-sub">Kerja bagus menjelajahi soal-soal tadi</p>
+    <div class="big-score" id="finalScore">0</div>
+    <p>total poin yang kamu kumpulkan</p>
+  </div>
+
+</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAT4PTFNdUBTvWaD3e9SEMHP2TzYXiydJs",
+    authDomain: "learning-with-odeyy.firebaseapp.com",
+    databaseURL: "https://learning-with-odeyy-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "learning-with-odeyy",
+    storageBucket: "learning-with-odeyy.firebasestorage.app",
+    messagingSenderId: "202003210153",
+    appId: "1:202003210153:web:7d063b82d18ad805acaeb8"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  const TIME_LIMIT = 20; // detik per soal
+  const BASE_POINTS = 100;
+  const MAX_SPEED_BONUS = 30;
+
+  let roomCode = null;
+  let playerId = null;
+  let questions = [];
+  let currentIndex = 0;
+  let score = 0;
+  let timerInterval = null;
+  let timeLeft = TIME_LIMIT;
+  let answered = false;
+
+  window.joinSession = async function() {
+    const name = document.getElementById('nameInput').value.trim();
+    const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
+    const errorEl = document.getElementById('joinError');
+    errorEl.textContent = '';
+
+    if (!name || !code) { errorEl.textContent = 'Isi nama dan kode room dulu ya.'; return; }
+
+    const joinBtn = document.getElementById('joinBtn');
+    joinBtn.disabled = true;
+    joinBtn.textContent = 'Menghubungkan…';
+
+    try {
+      const snap = await db.ref('sessions/' + code).get();
+      if (!snap.exists()) { throw new Error('Kode room tidak ditemukan.'); }
+      const session = snap.val();
+      if (session.status !== 'active') { throw new Error('Sesi ini sudah ditutup.'); }
+
+      const jsonFile = session.quizSetId === 'buku1' ? 'quiz-buku1.json' : 'quiz-buku2.json';
+      const res = await fetch(jsonFile);
+      let rawQuestions = await res.json();
+
+      // acak urutan soal
+      rawQuestions = shuffle(rawQuestions);
+      // acak urutan pilihan tiap soal, sesuaikan index jawaban benar
+      questions = rawQuestions.map(q => {
+        const optionIndices = shuffle(q.options.map((_, i) => i));
+        const newOptions = optionIndices.map(i => q.options[i]);
+        const newCorrect = optionIndices.indexOf(q.correct);
+        return { q: q.q, options: newOptions, correct: newCorrect };
+      });
+
+      roomCode = code;
+      playerId = 'p_' + Math.random().toString(36).slice(2, 10);
+
+      await db.ref('sessions/' + roomCode + '/players/' + playerId).set({
+        name: name, score: 0, currentQuestion: 0, finished: false, joinedAt: firebase.database.ServerValue.TIMESTAMP
+      });
+
+      document.getElementById('joinView').style.display = 'none';
+      document.getElementById('quizView').style.display = 'block';
+      currentIndex = 0; score = 0;
+      showQuestion();
+
+    } catch (err) {
+      errorEl.textContent = err.message;
+      joinBtn.disabled = false;
+      joinBtn.textContent = 'Gabung & Mulai';
+    }
+  };
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function showQuestion() {
+    answered = false;
+    const q = questions[currentIndex];
+    document.getElementById('progressLabel').textContent = `Soal ${currentIndex + 1}/${questions.length}`;
+    document.getElementById('scoreLabel').textContent = `Skor: ${score}`;
+    document.getElementById('questionText').textContent = q.q;
+    document.getElementById('scoreFlash').textContent = '';
+
+    const list = document.getElementById('optionsList');
+    list.innerHTML = q.options.map((opt, i) =>
+      `<button class="option-btn" onclick="selectAnswer(${i})">${escapeHtml(opt)}</button>`
+    ).join('');
+
+    timeLeft = TIME_LIMIT;
+    updateTimerBar();
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timeLeft -= 1;
+      updateTimerBar();
+      if (timeLeft <= 0) { clearInterval(timerInterval); selectAnswer(-1); }
+    }, 1000);
+  }
+
+  function updateTimerBar() {
+    const bar = document.getElementById('timerBar');
+    const pct = Math.max(0, (timeLeft / TIME_LIMIT) * 100);
+    bar.style.width = pct + '%';
+    bar.classList.toggle('urgent', timeLeft <= 5);
+  }
+
+  window.selectAnswer = function(selectedIndex) {
+    if (answered) return;
+    answered = true;
+    clearInterval(timerInterval);
+
+    const q = questions[currentIndex];
+    const buttons = document.querySelectorAll('.option-btn');
+    buttons.forEach((b, i) => {
+      b.disabled = true;
+      if (i === q.correct) b.classList.add('correct');
+      else if (i === selectedIndex) b.classList.add('wrong');
+    });
+
+    let gained = 0;
+    if (selectedIndex === q.correct) {
+      const speedBonus = Math.round((timeLeft / TIME_LIMIT) * MAX_SPEED_BONUS);
+      gained = BASE_POINTS + speedBonus;
+      score += gained;
+      document.getElementById('scoreFlash').textContent = `Benar! +${gained} poin`;
+    } else {
+      document.getElementById('scoreFlash').textContent = selectedIndex === -1 ? 'Waktu habis!' : 'Kurang tepat.';
+    }
+    document.getElementById('scoreLabel').textContent = `Skor: ${score}`;
+
+    const nextIndex = currentIndex + 1;
+    const isLast = nextIndex >= questions.length;
+
+    db.ref('sessions/' + roomCode + '/players/' + playerId).update({
+      score: score,
+      currentQuestion: nextIndex,
+      finished: isLast,
+      finishedAt: isLast ? firebase.database.ServerValue.TIMESTAMP : null
+    });
+
+    setTimeout(() => {
+      if (isLast) { showResult(); } else { currentIndex = nextIndex; showQuestion(); }
+    }, 1400);
+  };
+
+  function showResult() {
+    document.getElementById('quizView').style.display = 'none';
+    document.getElementById('resultView').style.display = 'block';
+    document.getElementById('finalScore').textContent = score;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+</body>
+</html>
