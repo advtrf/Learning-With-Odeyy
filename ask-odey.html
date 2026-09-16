@@ -262,10 +262,21 @@
   .odey-corner p{font-size:11px;font-style:italic;color:var(--ink-faint);text-align:center;margin:0;}
 
   @media(max-width:900px){
-    .book{grid-template-columns:1fr;height:auto;min-height:92vh;}
+    /* FIX: "height:auto; min-height:92vh" let the chat column collapse to
+       whatever height its content happened to need, instead of filling the
+       screen — that's why the page felt like it wasn't displayed "full" on
+       mobile. We now give .book an explicit, dynamic-viewport-aware height
+       and stretch the body to it, so the chat log's flex:1 area actually has
+       real space to fill. 100dvh (falls back to 100vh on older browsers)
+       also avoids mobile browsers' address-bar shrinking the visible area. */
+    body{padding:0;align-items:stretch;justify-content:stretch;min-height:100vh;min-height:100dvh;}
+    .book{
+      grid-template-columns:1fr;
+      height:100vh;height:100dvh;
+      border-radius:0;
+      max-width:100%;
+    }
     .sidebar-left,.sidebar-right{display:none;}
-    body{padding:0;}
-    .book{border-radius:0;}
   }
 </style>
 </head>
@@ -456,7 +467,6 @@ PENTING:
 
     addUserMessage(text);
     history.push({ role: 'user', content: text });
-    logHistory(text);
 
     showTyping();
     isLoading = true;
@@ -509,11 +519,12 @@ PENTING:
     const wrap = document.createElement('div');
     wrap.className = 'msg user';
     const safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const markBtn = `<button onclick="toggleHistoryMark(this)" data-text="${encodeURIComponent(text)}" style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--brass-light);margin-left:6px;">🕐 tandai</button>`;
     wrap.innerHTML = `
       <div class="msg-avatar">Km</div>
       <div>
         <div class="msg-bubble">${safe}</div>
-        <div class="msg-time">Kamu &middot; ${getTime()}</div>
+        <div class="msg-time">Kamu &middot; ${getTime()} ${markBtn}</div>
       </div>`;
     msgs.appendChild(wrap);
     scrollBottom();
@@ -607,23 +618,38 @@ PENTING:
     setActiveNav(isOpen ? 1 : idxMap[name]);
   };
 
-  /* ============ RIWAYAT CHAT (localStorage) ============ */
-  function logHistory(question){
-    let log = JSON.parse(localStorage.getItem(STORAGE_HISTORY_KEY) || '[]');
-    log.unshift({ q: question, t: getTime() });
-    log = log.slice(0, 15);
-    localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(log));
+  /* ============ RIWAYAT CHAT (localStorage) ============
+     Bukan lagi auto-log tiap pertanyaan. Siswa menandai pertanyaannya
+     sendiri lewat tombol jam (🕐) di bawah bubble pesan mereka — sama
+     persis pola kerjanya dengan tombol bintang (☆) di Favorit, cuma
+     targetnya pesan siswa, bukan jawaban Odey. Klik item riwayat akan
+     MENGIRIM ULANG pertanyaan itu ke Odey (lewat AI lagi), karena ini
+     representasi "pertanyaan yang aku ajukan", bukan jawaban jadi. */
+  const escText = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  window.toggleHistoryMark = function(btn){
+    const text = decodeURIComponent(btn.dataset.text);
+    let hist = JSON.parse(localStorage.getItem(STORAGE_HISTORY_KEY) || '[]');
+    const exists = hist.some(h => h.text === text);
+    if (exists) {
+      hist = hist.filter(h => h.text !== text);
+      btn.textContent = '🕐 tandai';
+    } else {
+      hist.unshift({ text, t: getTime() });
+      btn.textContent = '🕑 ditandai';
+    }
+    localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(hist.slice(0, 20)));
     renderHistoryPanel();
-  }
+  };
   function renderHistoryPanel(){
     const el = document.getElementById('panel-history');
-    const log = JSON.parse(localStorage.getItem(STORAGE_HISTORY_KEY) || '[]');
-    if (log.length === 0) { el.innerHTML = '<div class="panel-empty">Belum ada riwayat.</div>'; return; }
-    el.innerHTML = log.map(item =>
-      `<div class="panel-item" onclick="askSuggestedText(${JSON.stringify(item.q)})">${item.q}</div>`
+    const hist = JSON.parse(localStorage.getItem(STORAGE_HISTORY_KEY) || '[]');
+    if (hist.length === 0) { el.innerHTML = '<div class="panel-empty">Belum ada pertanyaan yang ditandai.</div>'; return; }
+    el.innerHTML = hist.map(item =>
+      `<div class="panel-item" onclick="resendQuestion(${JSON.stringify(item.text)})">${escText(item.text.slice(0, 70))}${item.text.length > 70 ? '…' : ''}</div>`
     ).join('');
   }
-  window.askSuggestedText = function(text){
+  window.resendQuestion = function(text){
     document.getElementById('chatInput').value = text;
     document.getElementById('suggestedWrap').style.display = 'none';
     closeAllPanels();
@@ -631,7 +657,9 @@ PENTING:
     sendMessage();
   };
 
-  /* ============ FAVORIT (localStorage) ============ */
+  /* ============ FAVORIT (localStorage) ============
+     Klik item favorit TIDAK memanggil AI lagi — teksnya sudah jadi jawaban,
+     jadi cukup ditampilkan ulang sebagai bubble Odey baru di chat. */
   window.toggleFavorite = function(btn){
     const text = decodeURIComponent(btn.dataset.text);
     let favs = JSON.parse(localStorage.getItem(STORAGE_FAVORITES_KEY) || '[]');
@@ -651,9 +679,15 @@ PENTING:
     const favs = JSON.parse(localStorage.getItem(STORAGE_FAVORITES_KEY) || '[]');
     if (favs.length === 0) { el.innerHTML = '<div class="panel-empty">Belum ada favorit.</div>'; return; }
     el.innerHTML = favs.map(f =>
-      `<div class="panel-item">${f.text.slice(0, 70)}${f.text.length > 70 ? '…' : ''}</div>`
+      `<div class="panel-item" onclick="replayFavorite(${JSON.stringify(f.text)})">${escText(f.text.slice(0, 70))}${f.text.length > 70 ? '…' : ''}</div>`
     ).join('');
   }
+  window.replayFavorite = function(text){
+    document.getElementById('suggestedWrap').style.display = 'none';
+    closeAllPanels();
+    setActiveNav(1);
+    addOdeyMessage(text, true);
+  };
 </script>
 </body>
 </html>
