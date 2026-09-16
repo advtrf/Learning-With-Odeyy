@@ -85,6 +85,16 @@
   .close-btn:hover{background:#f7e9e6;}
 
   .status-note{text-align:center;font-size:12.5px;color:var(--ink-faint);font-style:italic;margin-top:14px;}
+
+  /* password gate */
+  .pw-card{background:var(--paper);border:1px solid var(--hairline);border-radius:8px;padding:24px;max-width:360px;margin:0 auto;}
+  .pw-card input{
+    width:100%;padding:11px 14px;border:1.5px solid var(--hairline);border-radius:6px;
+    font-family:'Source Serif 4', serif;font-size:15px;background:var(--paper-light);color:var(--ink);
+    margin-bottom:12px;
+  }
+  .pw-card input:focus{outline:none;border-color:var(--herbarium);}
+  .pw-error{color:var(--rust);font-size:13px;margin-top:8px;text-align:center;min-height:16px;}
 </style>
 </head>
 <body>
@@ -101,7 +111,15 @@
   <h2 class="page-title">Buat Sesi Quiz</h2>
   <p class="page-sub">Pilih paket soal, lalu bagikan kode ke siswa</p>
 
-  <div id="setupView">
+  <div id="passwordGate">
+    <div class="pw-card">
+      <input type="password" id="pwInput" placeholder="Masukkan password guru" onkeydown="if(event.key==='Enter')checkPassword()">
+      <button class="create-btn" onclick="checkPassword()">Masuk</button>
+      <div class="pw-error" id="pwError"></div>
+    </div>
+  </div>
+
+  <div id="setupView" style="display:none;">
     <div class="setup-card">
       <div class="field">
         <label>Pilih paket soal</label>
@@ -150,6 +168,27 @@
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
+
+  // Ganti password ini ke sesuatu yang cuma kamu tahu.
+  // CATATAN: ini bukan keamanan sungguhan (siapa pun bisa lihat lewat "view source"),
+  // cuma penghalang ringan supaya siswa tidak iseng buka halaman ini.
+  const HOST_PASSWORD = "odey-guru-2026";
+
+  if (sessionStorage.getItem('odey_host_ok') === 'yes') {
+    document.getElementById('passwordGate').style.display = 'none';
+    document.getElementById('setupView').style.display = 'block';
+  }
+
+  window.checkPassword = function() {
+    const input = document.getElementById('pwInput').value;
+    if (input === HOST_PASSWORD) {
+      sessionStorage.setItem('odey_host_ok', 'yes');
+      document.getElementById('passwordGate').style.display = 'none';
+      document.getElementById('setupView').style.display = 'block';
+    } else {
+      document.getElementById('pwError').textContent = 'Password salah, coba lagi.';
+    }
+  };
 
   let selectedSet = 'buku1';
   let currentRoomCode = null;
