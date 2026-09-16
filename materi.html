@@ -655,13 +655,45 @@
       document.getElementById('modalTV').classList.add('open');
     });
 
-    // Daftar video
+    // ---------- Elemen media ----------
+    var audio = document.getElementById('lofiAudio');
+    var playerEl = document.getElementById('recordPlayer');
+    var statusEl = document.getElementById('musicStatus');
+    // FIX: sebelumnya selector ini '.track-item' TANPA scope, jadi ikut menangkap
+    // item di #videoList juga. Akibatnya klik video sekaligus memicu <audio> ikut
+    // memutar file video itu sebagai "lagu" -> dua sumber suara bertabrakan.
+    // Sekarang di-scope khusus ke daftar musik saja.
+    var trackItems = document.querySelectorAll('#trackList .track-item');
+
     var videoEl = document.getElementById('materiVideo');
     var videoTitleEl = document.getElementById('videoTitle');
     var videoItems = document.querySelectorAll('#videoList .track-item');
 
+    var currentSrc = null;
+
+    function resetMusicUI(){
+      trackItems.forEach(function(t){ t.classList.remove('playing'); });
+      playerEl.classList.remove('playing');
+      statusEl.textContent = 'musik lofi';
+      currentSrc = null;
+    }
+    function resetVideoUI(){
+      videoItems.forEach(function(t){ t.classList.remove('playing'); });
+    }
+
+    function pauseMusic(){
+      if(!audio.paused){ audio.pause(); }
+      resetMusicUI();
+    }
+    function pauseVideo(){
+      if(!videoEl.paused){ videoEl.pause(); }
+      resetVideoUI();
+    }
+
+    // ---------- Daftar video ----------
     videoItems.forEach(function(item){
       item.addEventListener('click', function(){
+        pauseMusic(); // FIX: hentikan musik lofi dulu sebelum video main
         videoItems.forEach(function(t){ t.classList.remove('playing'); });
         item.classList.add('playing');
         videoEl.src = item.dataset.src;
@@ -669,35 +701,45 @@
         videoEl.play().catch(function(){ /* menunggu file tersedia */ });
       });
     });
+    // Jaga-jaga: kalau video diputar lewat kontrol bawaan (play button di player),
+    // musik lofi tetap harus berhenti supaya tidak bertabrakan.
+    videoEl.addEventListener('play', function(){
+      pauseMusic();
+    });
 
     videoEl.addEventListener('error', function(){
       videoTitleEl.textContent = 'Video Materi (berkas belum ada)';
     });
 
-    // Tutup modal
+    // ---------- Tutup modal ----------
     document.querySelectorAll('[data-close]').forEach(function(btn){
       btn.addEventListener('click', function(){
-        btn.closest('.modal-overlay').classList.remove('open');
+        var overlay = btn.closest('.modal-overlay');
+        overlay.classList.remove('open');
+        // FIX: pause media terkait saat modalnya ditutup, supaya tidak nyangkut main di belakang
+        if(overlay.id === 'modalMusic') pauseMusic();
+        if(overlay.id === 'modalTV') pauseVideo();
       });
     });
     document.querySelectorAll('.modal-overlay').forEach(function(overlay){
       overlay.addEventListener('click', function(e){
-        if(e.target === overlay) overlay.classList.remove('open');
+        if(e.target === overlay){
+          overlay.classList.remove('open');
+          if(overlay.id === 'modalMusic') pauseMusic();
+          if(overlay.id === 'modalTV') pauseVideo();
+        }
       });
     });
     document.addEventListener('keydown', function(e){
       if(e.key === 'Escape'){
         document.querySelectorAll('.modal-overlay.open').forEach(function(o){ o.classList.remove('open'); });
+        // Escape bisa menutup beberapa modal sekaligus, jadi hentikan keduanya untuk aman
+        pauseMusic();
+        pauseVideo();
       }
     });
 
-    // Pemutar musik — buka pop-up daftar lagu
-    var audio = document.getElementById('lofiAudio');
-    var playerEl = document.getElementById('recordPlayer');
-    var statusEl = document.getElementById('musicStatus');
-    var trackItems = document.querySelectorAll('.track-item');
-    var currentSrc = null;
-
+    // ---------- Pemutar musik ----------
     document.getElementById('recordPlayerBtn').addEventListener('click', function(){
       document.getElementById('modalMusic').classList.add('open');
     });
@@ -716,6 +758,7 @@
           return;
         }
 
+        pauseVideo(); // FIX: hentikan video dulu sebelum musik main
         // pindah lagu
         trackItems.forEach(function(t){ t.classList.remove('playing'); });
         audio.src = src;
@@ -734,10 +777,7 @@
     });
 
     audio.addEventListener('ended', function(){
-      trackItems.forEach(function(t){ t.classList.remove('playing'); });
-      playerEl.classList.remove('playing');
-      statusEl.textContent = 'musik lofi';
-      currentSrc = null;
+      resetMusicUI();
     });
 
     audio.addEventListener('error', function(){
