@@ -712,12 +712,13 @@
     });
 
     // ---------- Tutup modal ----------
+    // Musik lofi = musik latar, TETAP main walau popup-nya ditutup.
+    // Video = harus berhenti total begitu popup TV ditutup (audionya menyatu
+    // di elemen <video>, jadi pause video otomatis menghentikan audionya juga).
     document.querySelectorAll('[data-close]').forEach(function(btn){
       btn.addEventListener('click', function(){
         var overlay = btn.closest('.modal-overlay');
         overlay.classList.remove('open');
-        // FIX: pause media terkait saat modalnya ditutup, supaya tidak nyangkut main di belakang
-        if(overlay.id === 'modalMusic') pauseMusic();
         if(overlay.id === 'modalTV') pauseVideo();
       });
     });
@@ -725,7 +726,6 @@
       overlay.addEventListener('click', function(e){
         if(e.target === overlay){
           overlay.classList.remove('open');
-          if(overlay.id === 'modalMusic') pauseMusic();
           if(overlay.id === 'modalTV') pauseVideo();
         }
       });
@@ -733,8 +733,7 @@
     document.addEventListener('keydown', function(e){
       if(e.key === 'Escape'){
         document.querySelectorAll('.modal-overlay.open').forEach(function(o){ o.classList.remove('open'); });
-        // Escape bisa menutup beberapa modal sekaligus, jadi hentikan keduanya untuk aman
-        pauseMusic();
+        // Hanya video yang dihentikan; musik lofi tetap lanjut main di belakang
         pauseVideo();
       }
     });
