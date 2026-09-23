@@ -150,53 +150,65 @@
   .bookshelf{
     background:var(--wood-dark);
     border-radius:4px 4px 0 0;
-    padding:16px 14px 0;
+    padding:16px 14px 14px;
     display:flex;
-    align-items:flex-end;
-    gap:10px;
+    flex-direction:column;
+    gap:18px;
     position:relative;
   }
-  .bookshelf::after{
-    content:"";
-    display:block;
-    position:absolute;
-    left:0;right:0;bottom:0;
-    height:14px;
-    background:var(--wood-mid);
+  .shelf-tier{
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    gap:10px;
+    padding-bottom:14px;
+    border-bottom:3px solid var(--wood-mid);
   }
-  .shelf-legs{
-    display:flex;justify-content:space-between;
-  }
+  .shelf-tier:last-child{border-bottom:none;padding-bottom:0;}
 
   .book-spine{
-    width:56px;height:190px;
+    width:52px;height:172px;
     border:none;
     border-radius:3px 3px 0 0;
     cursor:pointer;
     display:flex;flex-direction:column;align-items:center;
-    padding:14px 0 10px;
+    padding:10px 0 6px;
     color:var(--vellum);
     font-family:'Fraunces', serif;
     position:relative;
     transition:transform .15s ease;
+    overflow:hidden; /* FIX: clip instead of letting long titles spill outside the spine */
   }
   .book-spine:hover{transform:translateY(-6px);}
-  .book-spine .roman{font-size:17px;margin-bottom:10px;}
+  .book-spine .roman{font-size:16px;margin-bottom:8px;flex-shrink:0;}
   .book-spine .spine-title{
     writing-mode:vertical-rl;
     transform:rotate(180deg);
-    font-size:13px;
-    letter-spacing:.03em;
-    line-height:1.3;
+    font-size:11px;
+    letter-spacing:.02em;
+    line-height:1.22;
+    /* FIX: giving this an explicit height (rather than letting it size to content)
+       is what makes long vertical titles wrap into a new column instead of
+       overflowing past the bottom of the spine button. */
+    height:130px;
+    max-width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
   .book-spine.book1{background:var(--herbarium);}
   .book-spine.book2{background:var(--rust);}
-  .book-spine.book3{
+  .book-spine.book3{background:var(--indigo);}
+  .book-spine.book4{background:var(--maroon);}
+  .book-spine.book5{background:var(--brass);}
+  .book-spine.book6{
     background:repeating-linear-gradient(135deg, #8a8578, #8a8578 6px, #7d7869 6px, #7d7869 12px);
     color:var(--vellum);
     opacity:.85;
   }
-  .book-spine.book3 .spine-title{font-style:italic;}
+  .book-spine.book6 .spine-title{font-style:italic;}
+
+  .bookshelf-tiers{display:flex;flex-direction:column;gap:18px;}
 
   /* ---------- Side furniture: record player & TV ---------- */
   .side-unit{
@@ -311,6 +323,13 @@
   .biome-card h4{font-family:'Fraunces', serif;font-size:14.5px;margin:0 0 4px;font-weight:500;}
   .biome-card p{font-size:13px;line-height:1.6;margin:0;}
 
+  .summary-table-wrap{overflow-x:auto;margin:14px 0 20px;border:1px solid var(--hairline);border-radius:4px;}
+  table.summary-table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--vellum);}
+  table.summary-table th, table.summary-table td{padding:10px 12px;border-bottom:1px solid var(--hairline);text-align:left;vertical-align:top;line-height:1.5;}
+  table.summary-table th{background:var(--herbarium);color:var(--vellum);font-family:'Fraunces', serif;font-weight:500;font-size:13px;}
+  table.summary-table tr:last-child td{border-bottom:none;}
+  table.summary-table td:first-child{font-weight:600;color:var(--indigo);white-space:nowrap;}
+
   .coming-soon-body{
     padding:40px 30px;text-align:center;
   }
@@ -392,18 +411,34 @@
 
       <!-- Bookshelf -->
       <div class="bookshelf">
-        <button class="book-spine book1" data-modal="modalBook1">
-          <span class="roman">I</span>
-          <span class="spine-title">Tingkat Keanekaragaman Hayati</span>
-        </button>
-        <button class="book-spine book2" data-modal="modalBook2">
-          <span class="roman">II</span>
-          <span class="spine-title">Tipe Ekosistem</span>
-        </button>
-        <button class="book-spine book3" data-modal="modalBook3">
-          <span class="roman">III</span>
-          <span class="spine-title">??? — segera terbit</span>
-        </button>
+        <div class="shelf-tier">
+          <button class="book-spine book1" data-modal="modalBook1">
+            <span class="roman">I</span>
+            <span class="spine-title">Tingkat Keanekaragaman Hayati</span>
+          </button>
+          <button class="book-spine book2" data-modal="modalBook2">
+            <span class="roman">II</span>
+            <span class="spine-title">Tipe Ekosistem</span>
+          </button>
+          <button class="book-spine book3" data-modal="modalBook3">
+            <span class="roman">III</span>
+            <span class="spine-title">Keanekaragaman Flora</span>
+          </button>
+        </div>
+        <div class="shelf-tier">
+          <button class="book-spine book4" data-modal="modalBook4">
+            <span class="roman">IV</span>
+            <span class="spine-title">Keanekaragaman Fauna di Indonesia</span>
+          </button>
+          <button class="book-spine book5" data-modal="modalBook5">
+            <span class="roman">V</span>
+            <span class="spine-title">Manfaat Keanekaragaman Hayati</span>
+          </button>
+          <button class="book-spine book6" data-modal="modalBook6">
+            <span class="roman">VI</span>
+            <span class="spine-title">??? — segera terbit</span>
+          </button>
+        </div>
       </div>
 
       <!-- TV -->
@@ -562,11 +597,226 @@
     </div>
   </div>
 
-  <!-- ============ MODAL: BOOK 3 (coming soon) ============ -->
+  <!-- ============ MODAL: BOOK 3 — Keanekaragaman Flora ============ -->
   <div class="modal-overlay" id="modalBook3">
     <div class="modal-box">
+      <svg class="modal-watermark" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 80 C 30 60, 30 30, 60 10"/>
+        <path d="M20 60 C 30 55, 38 46, 34 38 Z"/>
+        <path d="M35 40 C 45 35, 53 26, 49 18 Z"/>
+      </svg>
       <div class="modal-head">
-        <h2>III. ???</h2>
+        <h2>III. Keanekaragaman Flora</h2>
+        <button class="modal-close" data-close>&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <h3>Persebaran Flora di Indonesia</h3>
+        <p>Indonesia memiliki keanekaragaman flora yang sangat melimpah, dipengaruhi oleh kondisi biogeografi serta perbedaan ketinggian tempat (topografi). Berdasarkan wilayah persebarannya, flora Indonesia terbagi menjadi flora Dataran Sunda, Dataran Sahul, dan Kawasan Wallacea.</p>
+
+        <h3>Wilayah Biogeografi Flora</h3>
+        <ul>
+          <li><em class="term">Flora Dataran Sunda</em> (Kawasan Barat) — didominasi oleh tumbuhan dari famili Dipterocarpaceae, seperti pohon keruing (<em>Dipterocarpus applanatus</em>) yang kayunya sering dimanfaatkan untuk bahan bangunan, serta famili Nepenthaceae seperti tumbuhan pemangsa serangga kantong semar (<em>Nepenthes gymnamphora</em>).</li>
+          <li><em class="term">Flora Dataran Sahul</em> (Kawasan Timur) — meliputi tanaman sagu (<em>Metroxylon sagu</em>), tumbuhan dari famili Myristicaceae seperti pala (<em>Myristica fragrans</em>), serta leda (<em>Eucalyptus deglupta</em>) yang memiliki batang berwarna-warni.</li>
+          <li><em class="term">Flora Kawasan Wallacea</em> (Kawasan Peralihan) — terletak di wilayah Indonesia bagian tengah dengan jenis vegetasi khas yang memadukan elemen Asiatis dan Australis.</li>
+        </ul>
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Palawan,_Philippines,_Tropical_rainforest.jpg" alt="Hutan hujan tropis dataran Sunda">
+          <figcaption>Fig. — Hutan hujan tropis berlapis khas Dataran Sunda, rumah bagi famili Dipterocarpaceae</figcaption>
+        </figure>
+
+        <h3>Klasifikasi Iklim Vertikal Franz Wilhelm Junghuhn</h3>
+        <p>Ahli geografi dan botani asal Jerman, Franz Wilhelm Junghuhn, mengklasifikasikan iklim di Pulau Jawa secara vertikal sesuai dengan jenis tumbuhan yang hidup pada ketinggian tersebut. Pengelompokan ini membagi flora Indonesia secara vertikal menjadi empat zona utama:</p>
+
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mangrove_forest_reforestation.jpg" alt="Hutan mangrove di pesisir">
+          <figcaption>Fig. — Zona 0–650 m: hutan mangrove di kawasan pesisir</figcaption>
+        </figure>
+        <p><strong>1. Zona Ketinggian 0–650 meter (Dataran Rendah &amp; Hutan Mangrove)</strong> — wilayah pantai dan hutan mangrove ditumbuhi pandan, bakau (<em>Rhizophora</em> sp.), kayu api (<em>Avicennia</em> sp.), bogem (<em>Bruguiera</em> sp.), sagu, dan nipah. Semakin jauh ke daratan, ditemukan tanaman budidaya seperti kelapa, kelapa sawit, cokelat, padi, jagung, kapuk (<em>Ceiba pentandra</em>), dan karet (<em>Hevea brasiliensis</em>).</p>
+
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tea_plantation_with_road_and_trees.jpg" alt="Perkebunan teh di dataran tinggi">
+          <figcaption>Fig. — Zona 650–1.500 m: perkebunan teh, salah satu tanaman budidaya khas zona ini</figcaption>
+        </figure>
+        <p><strong>2. Zona Ketinggian 650–1.500 meter</strong> — ditumbuhi oleh tanaman rasamala (<em>Altingia excelsa</em>), kina (<em>Cinchona officinalis</em>), aren, pinang, kopi, tembakau, dan teh.</p>
+
+        <p><strong>3. Zona Ketinggian 1.500–2.500 meter</strong> — ditumbuhi oleh tanaman cantigi koneng (<em>Rhododendron album</em>), cemara gunung (<em>Casuarina junghuhniana</em>), anggrek tanah (<em>Paphiopedilum praestans</em>) di pegunungan Papua, serta berri (<em>Vaccinium lucidum</em>).</p>
+
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bunga_Edelweiss.jpg" alt="Bunga edelweiss Jawa">
+          <figcaption>Fig. — Zona di atas 2.500 m: edelweiss (<em>Anaphalis javanica</em>), si "bunga abadi" pegunungan</figcaption>
+        </figure>
+        <p><strong>4. Zona Ketinggian di atas 2.500 meter (Pegunungan Cold/Dingin)</strong> — merupakan kawasan pegunungan berudara dingin yang didominasi oleh lumut, liken, dan bunga edelweiss (<em>Anaphalis javanica</em>).</p>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: BOOK 4 — Keanekaragaman Fauna di Indonesia ============ -->
+  <div class="modal-overlay" id="modalBook4">
+    <div class="modal-box">
+      <svg class="modal-watermark" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 80 C 30 60, 30 30, 60 10"/>
+        <path d="M20 60 C 30 55, 38 46, 34 38 Z"/>
+        <path d="M35 40 C 45 35, 53 26, 49 18 Z"/>
+      </svg>
+      <div class="modal-head">
+        <h2>IV. Keanekaragaman Fauna di Indonesia</h2>
+        <button class="modal-close" data-close>&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <h3>Mengapa Flora dan Fauna Berbeda-beda?</h3>
+        <p>Setiap wilayah di bumi memiliki sejarah geologi dan kondisi lingkungan yang berbeda. Perbedaan ini memengaruhi tiga hal: jenis organisme yang dapat hidup di sana, kemampuan organisme untuk berpindah ke wilayah tersebut, dan proses adaptasi serta evolusi yang dijalani makhluk hidup di dalamnya.</p>
+        <p>Dengan kata lain, <em class="term">persebaran flora dan fauna adalah hasil dari sejarah geologi, kondisi lingkungan, dan evolusi</em> yang saling berkaitan — bukan sesuatu yang terjadi secara acak.</p>
+
+        <figure>
+          <img src="assets/images/materi/map.png" alt="Peta pembagian wilayah Sundaland, Wallacea, dan Sahul beserta Garis Wallace dan Garis Weber">
+          <figcaption>Fig. — Peta pembagian Sundaland, Wallacea, dan Sahul, dipisahkan oleh Garis Wallace dan Garis Weber</figcaption>
+        </figure>
+
+        <h3>Sundaland</h3>
+        <p>Sundaland meliputi Sumatra, Jawa, Kalimantan, dan Bali. Wilayah ini dahulu terhubung langsung dengan Benua Asia melalui daratan. Pada zaman es, permukaan air laut turun drastis sehingga dasar laut yang dangkal di sekitar wilayah ini berubah menjadi daratan luas — membentuk semacam "jembatan darat" yang memungkinkan hewan-hewan dari Asia berpindah masuk.</p>
+        <p>Karena terhubung dengan Asia, fauna Sundaland memiliki banyak ciri <em class="term">Asiatis</em> — mirip dengan fauna daratan Asia.</p>
+        <div class="biome-grid">
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Orangutan_Kalimantan.jpg" alt="Orangutan"><h4>Orangutan</h4><p>Primata besar, Kalimantan &amp; Sumatra.</p></div>
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wild_Sumatran_tiger.jpg" alt="Harimau Sumatra"><h4>Harimau</h4><p>Predator puncak hutan Sumatra.</p></div>
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gajah_Sumatra.jpg" alt="Gajah Sumatra"><h4>Gajah</h4><p>Mamalia darat terbesar di Sundaland.</p></div>
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sumatran_Rhino.jpg" alt="Badak Sumatra"><h4>Badak</h4><p>Badak Sumatra, salah satu spesies paling langka.</p></div>
+        </div>
+
+        <h3>Wallacea</h3>
+        <p>Wallacea meliputi Sulawesi, Nusa Tenggara, dan Maluku — wilayah yang <em class="term">tidak pernah sepenuhnya terhubung</em> dengan Asia maupun Australia, bahkan saat permukaan laut turun di zaman es. Laut yang dalam di sekelilingnya menjadi penghalang alami bagi kebanyakan hewan darat untuk menyeberang.</p>
+        <p>Hanya sebagian organisme yang berhasil mencapai wilayah ini — entah terbawa arus, terbang, atau secara kebetulan. Begitu terisolasi di pulau-pulau Wallacea, populasi tersebut berkembang sendiri secara terpisah dari populasi asalnya. Proses ini disebut <em class="term">spesiasi alopatrik</em> — pembentukan spesies baru akibat populasi terpisah secara geografis dalam waktu yang lama, sehingga masing-masing berevolusi mengikuti jalur berbeda.</p>
+        <p>Di beberapa kasus, satu nenek moyang yang berhasil masuk dapat berkembang menjadi banyak spesies berbeda untuk mengisi relung-relung (niche) yang kosong — proses ini disebut <em class="term">radiasi adaptif</em>. Kombinasi isolasi dan radiasi adaptif inilah yang membuat Wallacea kaya akan hewan <em class="term">endemik</em> — hewan yang hanya ditemukan di satu wilayah tertentu dan tidak ada di tempat lain.</p>
+        <div class="biome-grid">
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Lowland_anoa.jpg" alt="Anoa"><h4>Anoa</h4><p>Kerbau kerdil endemik Sulawesi.</p></div>
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Babirusa_berkelahi.jpg" alt="Babirusa"><h4>Babirusa</h4><p>Babi bertaring khas Sulawesi.</p></div>
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Komodo_dragon_(Varanus_komodoensis).jpg" alt="Komodo"><h4>Komodo</h4><p>Kadal terbesar di dunia, endemik Nusa Tenggara.</p></div>
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Macrocephalon_maleo_-_Muara_Pusian_(1).JPG" alt="Maleo"><h4>Maleo</h4><p>Burung endemik yang mengerami telur di pasir panas.</p></div>
+        </div>
+
+        <h3>Sahul</h3>
+        <p>Sahul meliputi Papua dan Australia. Sama seperti Sundaland, Papua dan Australia dahulu dapat terhubung lewat daratan ketika permukaan laut turun pada zaman es. Hewan dapat berpindah bebas di antara kedua wilayah ini.</p>
+        <p>Karena kawasan Sahul memiliki sejarah evolusi yang berbeda dari Asia (terpisah oleh Wallacea di tengahnya), fauna yang berkembang di sini punya ciri khas tersendiri — banyak yang bercirikan <em class="term">Australis</em>, seperti mamalia berkantung (marsupialia).</p>
+        <div class="biome-grid">
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bennett's_Tree-kangaroo.jpg" alt="Kanguru pohon"><h4>Kanguru Pohon</h4><p>Marsupialia yang hidup &amp; memanjat di pepohonan Papua.</p></div>
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cassowary_1.jpg" alt="Kasuari"><h4>Kasuari</h4><p>Burung raksasa tak bisa terbang, khas Papua &amp; Australia.</p></div>
+          <div class="biome-card"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Common_spotted_cuscus_(Spilocuscus_maculatus),_Natural_History_Museum,_London,_Mammals_Gallery.JPG" alt="Kuskus"><h4>Kuskus</h4><p>Marsupialia arboreal, kerabat jauh koala.</p></div>
+        </div>
+
+        <h3>Garis Wallace &amp; Garis Weber</h3>
+        <p>Batas antara ketiga wilayah ini bukan garis administratif, melainkan garis yang ditarik berdasarkan pengamatan biologis. <em class="term">Garis Wallace</em> memisahkan Sundaland dari Wallacea — dicetuskan oleh Alfred Russel Wallace, naturalis yang menjelajahi Nusantara pada abad ke-19 (ilustrasinya bisa kamu lihat di halaman depan situs ini). Belakangan, <em class="term">Garis Weber</em> ditarik lebih ke timur untuk menandai batas yang lebih akurat antara Wallacea dan Sahul, berdasarkan perbandingan jumlah spesies Asiatis dan Australis di tiap sisi.</p>
+
+        <h3>Mengapa Akhirnya Berbeda?</h3>
+        <p>Secara sederhana, rangkaian sebab-akibatnya seperti ini:</p>
+        <div class="step-list-wrap">
+          <ol style="margin:0 0 14px 20px;padding:0;font-size:15.5px;line-height:1.9;">
+            <li><strong>Sejarah geologi</strong> menentukan hubungan antarwilayah (terhubung daratan atau terpisah laut dalam)</li>
+            <li><strong>Perpindahan organisme</strong> ditentukan oleh hubungan tersebut — organisme mana yang bisa mencapai wilayah itu</li>
+            <li><strong>Kondisi lingkungan</strong> menentukan organisme mana yang mampu bertahan hidup di sana</li>
+            <li><strong>Isolasi + adaptasi + evolusi</strong> pada akhirnya menghasilkan perbedaan organisme antarwilayah</li>
+          </ol>
+        </div>
+        <p>Hasil akhirnya: <strong>Sundaland → Asiatis</strong>, <strong>Wallacea → peralihan &amp; kaya endemik</strong>, <strong>Sahul → Australis</strong>.</p>
+        <p style="font-style:italic;color:var(--ink-soft);border-left:3px solid var(--brass);padding-left:14px;margin-top:18px;">Perbedaan flora dan fauna Indonesia terjadi karena setiap wilayah memiliki sejarah geologi dan kondisi lingkungan yang berbeda. Perbedaan tersebut memengaruhi perpindahan, kemampuan bertahan hidup, dan evolusi organisme sehingga terbentuk persebaran flora dan fauna yang berbeda.</p>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: BOOK 5 — Manfaat Keanekaragaman Hayati ============ -->
+  <div class="modal-overlay" id="modalBook5">
+    <div class="modal-box">
+      <svg class="modal-watermark" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 80 C 30 60, 30 30, 60 10"/>
+        <path d="M20 60 C 30 55, 38 46, 34 38 Z"/>
+        <path d="M35 40 C 45 35, 53 26, 49 18 Z"/>
+      </svg>
+      <div class="modal-head">
+        <h2>V. Manfaat Keanekaragaman Hayati</h2>
+        <button class="modal-close" data-close>&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <h3>Fungsi dan Manfaat Keanekaragaman Hayati</h3>
+        <p>Keanekaragaman hayati Indonesia memiliki fungsi dan manfaat yang sangat luas dalam menopang kehidupan manusia, mulai dari pemenuhan kebutuhan dasar hingga aspek sosial-budaya dan kelestarian genetik.</p>
+
+        <h3>A. Sumber Pangan</h3>
+        <ul>
+          <li><strong>Makanan Pokok</strong> — sebagian besar penduduk Indonesia mengonsumsi beras dari tanaman padi (<em>Oryza sativa</em>). Selain itu, daerah tertentu menggunakan jagung, singkong, ubi jalar, talas, dan sagu sebagai makanan pokok.</li>
+          <li><strong>Buah-buahan &amp; Sayuran</strong> — Indonesia memiliki sekitar 400 jenis tanaman buah (seperti sirsak, duku, durian, manggis, rambutan, jeruk bali, markisa, mangga, matoa) serta sekitar 370 jenis sayuran (sawi, kangkung, katuk, kacang panjang, buncis, bayam, terung, kol, seledri, bawang kucai).</li>
+          <li><strong>Tanaman Umbi &amp; Rempah</strong> — sekitar 70 jenis tanaman berumbi (kunyit, jahe, lengkuas, temu lawak, wortel, lobak, talas, singkong) dan 55 jenis tanaman rempah-rempah (merica, cengkih, pala, ketumbar).</li>
+          <li><strong>Sumber Pangan Hewani</strong> — berasal dari aneka ragam hewan darat, air tawar, dan laut seperti sapi, kambing, kelinci, burung, ayam, ikan bandeng, ikan lele, belut, kepiting, kerang, udang, dan rajungan.</li>
+        </ul>
+
+        <h3>B. Sumber Obat-obatan</h3>
+        <p>Indonesia memiliki sekitar 30.000 spesies tumbuhan, di mana 940 spesies merupakan tanaman obat dan sekitar 250 spesies telah dimanfaatkan dalam industri obat herbal lokal. Beberapa contoh pemanfaatannya:</p>
+        <ul>
+          <li><strong>Buah Merah</strong> (<em>Pandanus conoideus</em>) — dimanfaatkan sebagai obat pengobati kanker (tumor), kolesterol tinggi, dan tekanan darah tinggi.</li>
+          <li><strong>Mengkudu / Pace</strong> (<em>Morinda citrifolia</em>) — digunakan untuk menurunkan tekanan darah tinggi.</li>
+          <li><strong>Pohon Kina</strong> (<em>Cinchona calisaya, Cinchona officinalis</em>) — kulit kayunya mengandung alkaloid kina (quinine) yang efektif untuk obat malaria.</li>
+          <li><strong>Produk Hewani</strong> — madu dari lebah dimanfaatkan secara luas untuk meningkatkan daya tahan tubuh.</li>
+        </ul>
+
+        <h3>C. Sumber Kosmetik &amp; Perawatan Diri</h3>
+        <ul>
+          <li><strong>Penghalus Kulit Tradisional</strong> — tumbuhan seperti kemuning, bengkuang, alpukat, dan beras digunakan sebagai bahan lulur tradisional.</li>
+          <li><strong>Perawatan Rambut</strong> — urang-aring (<em>Eclipta alba</em>), mangkokan, pandan, minyak kelapa, dan lidah buaya (<em>Aloe vera</em>) dimanfaatkan sebagai pelumas dan penghitam rambut.</li>
+          <li><strong>Bahan Parfum &amp; Wewangian</strong> — bunga melati (<em>Jasminum grandiflorum</em>) dan kayu cendana (<em>Santalum album</em>) dimanfaatkan sebagai bahan wewangian alami.</li>
+        </ul>
+
+        <h3>D. Sumber Sandang &amp; Papan</h3>
+        <p><strong>Bahan Sandang (Pakaian)</strong> — serat tumbuhan seperti rami, kapas, pisang hutan/abaca, sisal, kenaf, dan jute dipintal menjadi kain. Suku Dani di Lembah Baliem memanfaatkan labu air untuk koteka (horim), serta tumbuhan wen dan purun tikus untuk pakaian wanita. Produk hewani seperti ulat sutra dan kulit sapi/kambing digunakan untuk bahan pakaian dan jaket.</p>
+        <p><strong>Bahan Papan (Bangunan)</strong> — kayu dari jati, kelapa, nangka, meranti, keruing, rasamala, ulin, dan bambu dimanfaatkan untuk jendela, pintu, tiang, dan alas atap. Daun lontar dan gebang di Pulau Timor dan Alor digunakan untuk atap dan dinding rumah.</p>
+        <div class="biome-grid">
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Batik_Artisan_Applying_Wax_with_Canting_in_Trusmi_Cirebon_Indonesia.jpg" alt="Perajin batik menggunakan canting">
+            <h4>Sandang — Batik</h4>
+            <p>Serat kapas dan pewarna alami diolah menjadi kain, salah satunya lewat teknik batik.</p>
+          </div>
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Toraja_house.jpg" alt="Rumah tongkonan dari kayu dan bambu">
+            <h4>Papan — Rumah Adat</h4>
+            <p>Kayu dan bambu jadi bahan utama rumah adat, seperti tongkonan khas Toraja.</p>
+          </div>
+        </div>
+
+        <h3>E. Aspek Budaya, Keagamaan, &amp; Tradisi</h3>
+        <p>Penduduk Indonesia yang terdiri dari sekitar 350 etnis (suku) memanfaatkan keanekaragaman hayati dalam berbagai upacara adat dan ritual keagamaan:</p>
+        <ul>
+          <li><strong>Budaya Nyekar (Ziarah Kubur)</strong> — masyarakat Jawa menggunakan bunga mawar, kantil, dan melati.</li>
+          <li><strong>Upacara Ngaben di Bali</strong> — menggunakan 39 jenis tumbuhan yang mengandung minyak atsiri berbau harum (kenanga, melati, cempaka, pandan, sirih, cendana).</li>
+          <li><strong>Hari Raya Kurban (Umat Islam)</strong> — menggunakan hewan ternak seperti kambing, sapi, dan kerbau.</li>
+          <li><strong>Perayaan Natal (Umat Nasrani)</strong> — menggunakan pohon cemara.</li>
+        </ul>
+
+        <h3>F. Sumber Plasma Nutfah (Sumber Daya Genetik)</h3>
+        <p>Plasma nutfah adalah bagian tubuh tumbuhan, hewan, atau mikroorganisme yang mempunyai fungsi dan kemampuan mewariskan sifat. Setiap organisme memiliki plasma nutfah yang berguna untuk merakit varietas unggul (seperti tahan penyakit atau berproduktivitas tinggi). Keanekaragaman plasma nutfah menjaga agar mutu sifat tetap lestari. Contohnya: padi Rojolele mewariskan sifat pulen dan rasa enak, serta ubi jalar cilembu dan duku palembang mewariskan sifat rasa manis.</p>
+
+        <h3>Tabel Ringkasan Pemanfaatan Keanekaragaman Hayati</h3>
+        <div class="summary-table-wrap">
+          <table class="summary-table">
+            <tr><th>Kategori Manfaat</th><th>Spesies / Bahan Organik</th><th>Kegunaan Utama</th></tr>
+            <tr><td>Pangan Pokok</td><td>Padi, Jagung, Singkong, Ubi Jalar, Talas, Sagu</td><td>Sumber karbohidrat dan makanan pokok penduduk</td></tr>
+            <tr><td>Obat Herbal</td><td>Buah Merah, Mengkudu, Pohon Kina, Lebah Madu</td><td>Pengobatan kanker, hipertensi, malaria, dan daya tahan tubuh</td></tr>
+            <tr><td>Kosmetik &amp; Perawatan</td><td>Kemuning, Bengkuang, Urang-aring, Lidah Buaya, Melati</td><td>Lulur tradisional, pelumas &amp; penghitam rambut, parfum</td></tr>
+            <tr><td>Sandang</td><td>Rami, Kapas, Abaca, Labu Air, Ulat Sutra</td><td>Bahan pembuat kain, pakaian adat (koteka), kain sutra</td></tr>
+            <tr><td>Papan (Konstruksi)</td><td>Kayu Jati, Meranti, Keruing, Ulin, Bambu, Daun Lontar</td><td>Bahan bangunan rumah tradisional, tiang, atap, dan dinding</td></tr>
+            <tr><td>Upacara &amp; Tradisi</td><td>Mawar, Kantil, Melati, Cempaka, Cendana, Hewan Kurban</td><td>Ritual Nyekar, Ngaben di Bali, Hari Raya Kurban, dan Natal</td></tr>
+            <tr><td>Plasma Nutfah</td><td>Padi Rojolele, Ubi Cilembu, Duku Palembang</td><td>Sumber daya genetik untuk perakitan varietas unggul</td></tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: BOOK 6 (coming soon) ============ -->
+  <div class="modal-overlay" id="modalBook6">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h2>VI. ???</h2>
         <button class="modal-close" data-close>&times;</button>
       </div>
       <div class="coming-soon-body">
@@ -659,10 +909,6 @@
     var audio = document.getElementById('lofiAudio');
     var playerEl = document.getElementById('recordPlayer');
     var statusEl = document.getElementById('musicStatus');
-    // FIX: sebelumnya selector ini '.track-item' TANPA scope, jadi ikut menangkap
-    // item di #videoList juga. Akibatnya klik video sekaligus memicu <audio> ikut
-    // memutar file video itu sebagai "lagu" -> dua sumber suara bertabrakan.
-    // Sekarang di-scope khusus ke daftar musik saja.
     var trackItems = document.querySelectorAll('#trackList .track-item');
 
     var videoEl = document.getElementById('materiVideo');
@@ -693,7 +939,7 @@
     // ---------- Daftar video ----------
     videoItems.forEach(function(item){
       item.addEventListener('click', function(){
-        pauseMusic(); // FIX: hentikan musik lofi dulu sebelum video main
+        pauseMusic();
         videoItems.forEach(function(t){ t.classList.remove('playing'); });
         item.classList.add('playing');
         videoEl.src = item.dataset.src;
@@ -701,8 +947,6 @@
         videoEl.play().catch(function(){ /* menunggu file tersedia */ });
       });
     });
-    // Jaga-jaga: kalau video diputar lewat kontrol bawaan (play button di player),
-    // musik lofi tetap harus berhenti supaya tidak bertabrakan.
     videoEl.addEventListener('play', function(){
       pauseMusic();
     });
@@ -713,8 +957,7 @@
 
     // ---------- Tutup modal ----------
     // Musik lofi = musik latar, TETAP main walau popup-nya ditutup.
-    // Video = harus berhenti total begitu popup TV ditutup (audionya menyatu
-    // di elemen <video>, jadi pause video otomatis menghentikan audionya juga).
+    // Video = harus berhenti total begitu popup TV ditutup.
     document.querySelectorAll('[data-close]').forEach(function(btn){
       btn.addEventListener('click', function(){
         var overlay = btn.closest('.modal-overlay');
@@ -733,7 +976,6 @@
     document.addEventListener('keydown', function(e){
       if(e.key === 'Escape'){
         document.querySelectorAll('.modal-overlay.open').forEach(function(o){ o.classList.remove('open'); });
-        // Hanya video yang dihentikan; musik lofi tetap lanjut main di belakang
         pauseVideo();
       }
     });
@@ -748,7 +990,6 @@
         var src = item.dataset.src;
 
         if(currentSrc === src && !audio.paused){
-          // lagu yang sama sedang diputar -> jeda
           audio.pause();
           item.classList.remove('playing');
           playerEl.classList.remove('playing');
@@ -757,8 +998,7 @@
           return;
         }
 
-        pauseVideo(); // FIX: hentikan video dulu sebelum musik main
-        // pindah lagu
+        pauseVideo();
         trackItems.forEach(function(t){ t.classList.remove('playing'); });
         audio.src = src;
         currentSrc = src;
