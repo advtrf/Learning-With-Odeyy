@@ -1,57 +1,212 @@
-[
+const questions = [
   {
-    "q": "Apa yang dimaksud dengan keanekaragaman hayati?",
+    "q": "Seorang siswa membandingkan tiga kelompok organisme berikut: (1) Padi IR64, Ciherang, dan Rojolele; (2) Harimau, singa, dan kucing rumah; (3) Hutan hujan tropis, gurun, dan tundra. Ketiga kelompok tersebut secara berurutan menunjukkan tingkat keanekaragaman hayati ....",
     "options": [
-      "Variasi makhluk hidup pada tingkat gen, spesies, dan ekosistem",
-      "Jumlah total makhluk hidup di suatu wilayah",
-      "Populasi hewan langka yang dilindungi",
-      "Persebaran manusia di berbagai benua"
+      "Gen, spesies, dan ekosistem",
+      "Spesies, gen, dan ekosistem",
+      "Gen, ekosistem, dan spesies",
+      "Spesies, ekosistem, dan gen"
     ],
     "correct": 0
   },
   {
-    "q": "Selain mutasi dan rekombinasi alami, variasi gen juga dapat muncul melalui campur tangan manusia lewat proses...",
+    "q": "Sebuah organisme air berukuran sangat kecil ditemukan melayang mengikuti arus dan tidak mampu berenang melawannya. Berdasarkan cara hidupnya, organisme tersebut paling tepat dimasukkan ke dalam kelompok ....",
     "options": [
-      "Fotosintesis dan respirasi",
-      "Hibridisasi dan domestikasi",
-      "Metamorfosis dan regenerasi",
-      "Fermentasi dan oksidasi"
+      "Nekton",
+      "Plankton",
+      "Bentos",
+      "Perifiton"
     ],
     "correct": 1
   },
   {
-    "q": "Persilangan antarvarietas atau antarspesies kerabat dekat untuk menghasilkan variasi baru disebut...",
-    "options": ["Domestikasi", "Adaptasi", "Hibridisasi", "Seleksi alam"],
+    "q": "Sebuah kawasan hutan memiliki curah hujan tinggi sepanjang tahun dan vegetasi bertingkat dari lantai hutan hingga tajuk. Jika kondisi tersebut dibandingkan dengan sabana, perbedaan yang paling tepat adalah ....",
+    "options": [
+      "Sabana memiliki salinitas lebih tinggi daripada hutan hujan",
+      "Hutan hujan memiliki musim dingin lebih panjang daripada sabana",
+      "Sabana memiliki vegetasi lebih terbuka dengan musim kering yang jelas",
+      "Hutan hujan memiliki tanah beku yang lebih tebal daripada sabana"
+    ],
     "correct": 2
   },
   {
-    "q": "Proses menjinakkan dan membudidayakan makhluk liar dalam lingkungan yang terkontrol disebut...",
-    "options": ["Domestikasi", "Hibridisasi", "Konservasi", "Migrasi"],
+    "q": "Wilayah Wallacea memiliki banyak organisme endemik. Salah satu alasan biologis yang paling berkaitan dengan kondisi tersebut adalah ....",
+    "options": [
+      "Wilayahnya selalu terhubung dengan daratan Asia melalui jembatan darat",
+      "Wilayahnya tidak pernah mengalami perubahan lingkungan sejak zaman es",
+      "Wilayahnya didominasi oleh organisme hasil domestikasi dan hibridisasi",
+      "Wilayahnya terisolasi sehingga populasi berevolusi terpisah"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Seorang petani memiliki tiga varietas padi dengan sifat yang berbeda. Ia ingin mempertahankan sifat tertentu yang bernilai bagi pengembangan varietas baru pada masa mendatang. Konsep yang paling berkaitan dengan tujuan tersebut adalah ....",
+    "options": [
+      "Plasma nutfah",
+      "Spesies invasif",
+      "Konservasi in situ",
+      "Radiasi adaptif"
+    ],
     "correct": 0
   },
   {
-    "q": "Varietas padi seperti IR64, Ciherang, dan Rojolele adalah contoh keanekaragaman pada tingkat...",
-    "options": ["Ekosistem", "Populasi", "Gen", "Spesies"],
+    "q": "Perhatikan kondisi berikut. Sebuah kawasan hutan diubah menjadi perkebunan monokultur yang hanya menanam satu jenis tanaman dalam wilayah yang sangat luas. Banyak organisme asli kemudian kehilangan sumber makanan dan tempat hidup. Faktor penyebab hilangnya keanekaragaman hayati yang paling sesuai dengan kasus tersebut adalah ....",
+    "options": [
+      "Perubahan iklim",
+      "Eksploitasi satwa",
+      "Industrialisasi pertanian dan hutan",
+      "Introduksi spesies pendatang"
+    ],
     "correct": 2
   },
   {
-    "q": "Famili kucing (Felidae) yang beragam mulai dari kucing rumah, harimau, hingga singa adalah contoh keanekaragaman pada tingkat...",
-    "options": ["Gen", "Spesies", "Ekosistem", "Habitat"],
-    "correct": 1
+    "q": "Pernyataan yang paling tepat untuk membedakan konservasi in situ dan ex situ adalah ....",
+    "options": [
+      "In situ dilakukan untuk tumbuhan, sedangkan ex situ untuk hewan",
+      "In situ menggunakan teknologi genetika, sedangkan ex situ menggunakan penangkaran",
+      "In situ dilakukan oleh pemerintah, sedangkan ex situ dilakukan oleh lembaga penelitian",
+      "In situ mempertahankan organisme di habitat asli, sedangkan ex situ di luar habitatnya"
+    ],
+    "correct": 3
   },
   {
-    "q": "Keanekaragaman ekosistem terbentuk dari interaksi antara komponen...",
+    "q": "Perhatikan pasangan wilayah dan ciri fauna berikut: (1) Sundaland — banyak fauna berciri Asiatis; (2) Wallacea — banyak fauna endemik; (3) Sahul — banyak fauna berciri Australis. Pola tersebut terutama dapat dijelaskan melalui perbedaan ....",
     "options": [
-      "Produsen dan konsumen saja",
-      "Biotik dan abiotik",
-      "Gen dan kromosom",
-      "Predator dan mangsa saja"
+      "Jenis makanan yang dikonsumsi oleh seluruh organisme di tiap wilayah",
+      "Tingkat pemanfaatan organisme oleh masyarakat di tiap wilayah",
+      "Sejarah geologi, isolasi geografis, dan proses evolusi",
+      "Jumlah spesies yang sengaja dipindahkan manusia antarpulau"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Suatu spesies tumbuhan langka masih memiliki populasi kecil di habitat alaminya. Habitat tersebut relatif terjaga dan interaksi tumbuhan dengan organisme lain masih berlangsung secara alami. Berdasarkan kondisi tersebut, pendekatan konservasi yang paling sesuai adalah ....",
+    "options": [
+      "In situ karena spesies tetap dipertahankan dalam ekosistem asalnya",
+      "Ex situ karena seluruh populasi perlu dipindahkan dari habitat asal",
+      "Domestikasi karena spesies perlu dibudidayakan sebagai tanaman pertanian",
+      "De-extinction karena populasi alami sudah tidak dapat dipertahankan"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sebuah danau mengalami pencemaran limbah industri. Dalam beberapa tahun, populasi ikan menurun dan organisme yang menjadi sumber makanannya juga semakin sedikit. Penjelasan yang paling tepat mengenai hubungan kedua perubahan tersebut adalah ....",
+    "options": [
+      "Pencemaran terutama memengaruhi organisme di permukaan air dan tidak berdampak pada organisme lain",
+      "Pencemaran dapat mengganggu komponen ekosistem dan hubungan dalam rantai makanan",
+      "Penurunan ikan terjadi karena organisme air berpindah ke dasar perairan dan menjadi bentos",
+      "Limbah industri meningkatkan keanekaragaman sehingga ikan berpindah habitat"
     ],
     "correct": 1
   },
   {
-    "q": "Manakah yang BUKAN termasuk tiga tingkat utama keanekaragaman hayati?",
-    "options": ["Gen", "Spesies", "Ekosistem", "Populasi"],
+    "q": "Menurut klasifikasi vertikal Junghuhn yang dibahas dalam materi, tanaman teh dan kopi banyak dikaitkan dengan wilayah ketinggian ....",
+    "options": [
+      "0–650 meter",
+      "650–1.500 meter",
+      "1.500–2.500 meter",
+      "Di atas 2.500 meter"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Sebuah pulau memiliki sejarah isolasi geografis yang panjang. Dari satu kelompok leluhur kemudian muncul beberapa spesies yang menempati relung berbeda. Proses yang paling tepat untuk menjelaskan terbentuknya keragaman tersebut adalah ....",
+    "options": [
+      "Domestikasi",
+      "Suksesi ekologis",
+      "Eksploitasi sumber daya",
+      "Radiasi adaptif"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Sebuah masyarakat memanfaatkan bunga melati dan kayu cendana untuk menghasilkan bahan pewangi. Berdasarkan materi Buku V, pemanfaatan tersebut termasuk kategori ....",
+    "options": [
+      "Sumber pangan",
+      "Sumber plasma nutfah",
+      "Sumber sandang dan papan",
+      "Sumber kosmetik dan perawatan diri"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Perubahan iklim dapat mengancam keanekaragaman hayati bukan hanya karena suhu meningkat, tetapi juga karena ....",
+    "options": [
+      "Sebagian besar spesies kehilangan kemampuan bereproduksi akibat suhu tinggi",
+      "Perubahan lingkungan dapat menggeser musim dan mengganggu hubungan antarorganisme",
+      "Ekosistem darat akan bergeser menjadi ekosistem perairan di banyak wilayah",
+      "Organisme invasif akan berkurang karena suhu yang lebih tinggi"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Organisasi internasional yang menyusun dan memperbarui Red List of Threatened Species adalah ....",
+    "options": [
+      "IUCN",
+      "WWF",
+      "UNEP",
+      "FAO"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Suatu spesies memiliki populasi liar yang sangat kecil karena habitat aslinya mengalami kerusakan berat. Sebagian individu masih dapat dipelihara dalam lingkungan terkendali dan program tersebut bertujuan mempertahankan populasi sebelum dilakukan upaya pemulihan habitat. Pendekatan yang paling sesuai dengan kondisi tersebut adalah ....",
+    "options": [
+      "Konservasi in situ",
+      "Eksploitasi terkendali",
+      "Konservasi ex situ",
+      "Introduksi spesies asing"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Perhatikan kasus berikut. Pada suatu wilayah, spesies asing diperkenalkan untuk membantu mengendalikan hama. Namun, spesies tersebut berkembang pesat, tidak memiliki banyak predator alami, dan mulai mengganggu organisme asli. Kesimpulan yang paling tepat berdasarkan materi adalah ....",
+    "options": [
+      "Organisme tersebut menunjukkan proses radiasi adaptif",
+      "Introduksi tersebut dapat menjadi faktor hilangnya keanekaragaman hayati",
+      "Keberadaan organisme tersebut meningkatkan konservasi ex situ",
+      "Organisme tersebut merupakan contoh keanekaragaman gen"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Dalam pembahasan de-extinction, terdapat perbedaan antara menghasilkan organisme yang memiliki beberapa sifat spesies punah dan benar-benar mengembalikan spesies tersebut secara genetik. Berdasarkan materi Buku VII, alasan yang paling tepat adalah ....",
+    "options": [
+      "Organisme hasil rekayasa selalu berasal dari spesies yang berbeda kelas taksonomi dengan spesies punah",
+      "DNA spesies punah tidak dapat dianalisis sehingga tidak berguna dalam penelitian genetika",
+      "Mengubah beberapa gen tidak otomatis menghasilkan genom identik dengan spesies punah",
+      "Rekayasa genetika hanya dapat dilakukan pada organisme yang masih hidup di habitat aslinya"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Seorang peneliti menemukan organisme yang hidup melekat pada batu di dalam sungai. Organisme tersebut tidak berenang bebas dan memperoleh tempat hidup dengan menempel pada substrat. Berdasarkan klasifikasi organisme akuatik dalam materi, organisme tersebut termasuk ....",
+    "options": [
+      "Perifiton",
+      "Neuston",
+      "Nekton",
+      "Plankton"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sebuah sekolah ingin membuat program konservasi yang sekaligus mempertahankan sumber daya genetik tumbuhan lokal. Sekolah tersebut memiliki lahan terbatas dan tidak mampu mempertahankan seluruh ekosistem asal tumbuhan. Rancangan yang paling sesuai dengan prinsip dalam materi adalah ....",
+    "options": [
+      "Memindahkan seluruh tumbuhan ke habitat buatan tanpa mencatat sifat setiap varietasnya",
+      "Menanam satu varietas saja agar pemeliharaan lebih sederhana dan hemat biaya",
+      "Mengganti varietas lokal dengan tanaman komersial yang pertumbuhannya lebih cepat",
+      "Menyimpan beberapa varietas sambil mencatat sifat genetiknya"
+    ],
     "correct": 3
   }
-]
+];
+
+// Pengecekan otomatis: peringatan di console jika ada soal yang datanya keliru
+questions.forEach(function(item, i){
+  if(!item.q || !Array.isArray(item.options) || item.options.length !== 4){
+    console.warn('Soal ' + (i + 1) + ': format tidak valid (harus ada q dan 4 opsi).');
+  }
+  if(!Number.isInteger(item.correct) || item.correct < 0 || item.correct >= item.options.length){
+    console.warn('Soal ' + (i + 1) + ': indeks jawaban benar di luar jangkauan.');
+  }
+});
