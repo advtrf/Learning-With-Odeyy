@@ -1,4 +1,4 @@
-const questions = [
+[
   {
     "q": "Seorang siswa membandingkan tiga kelompok organisme berikut: (1) Padi IR64, Ciherang, dan Rojolele; (2) Harimau, singa, dan kucing rumah; (3) Hutan hujan tropis, gurun, dan tundra. Ketiga kelompok tersebut secara berurutan menunjukkan tingkat keanekaragaman hayati ....",
     "options": [
