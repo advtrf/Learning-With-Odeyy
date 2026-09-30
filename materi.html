@@ -40,7 +40,7 @@
   }
 
   .book{
-    width:100%;max-width:960px;
+    width:100%;max-width:1120px;
     background:var(--bg);
     border-radius:6px;
     box-shadow:0 30px 70px rgba(0,0,0,0.5);
@@ -71,7 +71,7 @@
     display:flex;
     align-items:center;
     gap:12px;
-    max-width:900px;
+    max-width:1040px;
     margin:0 auto;
     padding:28px 24px 18px;
     border-bottom:1px solid var(--hairline);
@@ -93,7 +93,7 @@
   .back-link:hover{color:var(--herbarium);}
 
   .page-title{
-    max-width:900px;margin:0 auto;padding:40px 24px 8px;text-align:center;
+    max-width:1040px;margin:0 auto;padding:40px 24px 8px;text-align:center;
     position:relative;
   }
   .page-title h1{
@@ -115,7 +115,7 @@
 
   /* ---------- Reading room scene ---------- */
   .room{
-    max-width:900px;margin:36px auto 0;
+    max-width:1040px;margin:36px auto 0;
     background-color:var(--vellum);
     background-image:
       linear-gradient(180deg, transparent 0%, transparent 68%, rgba(44,59,34,0.06) 68%, rgba(44,59,34,0.06) 100%),
@@ -167,7 +167,7 @@
   .shelf-tier:last-child{border-bottom:none;padding-bottom:0;}
 
   .book-spine{
-    width:52px;height:172px;
+    width:58px;height:172px;
     border:none;
     border-radius:3px 3px 0 0;
     cursor:pointer;
@@ -177,7 +177,7 @@
     font-family:'Fraunces', serif;
     position:relative;
     transition:transform .15s ease;
-    overflow:hidden; /* FIX: clip instead of letting long titles spill outside the spine */
+    overflow:hidden;
   }
   .book-spine:hover{transform:translateY(-6px);}
   .book-spine .roman{font-size:16px;margin-bottom:8px;flex-shrink:0;}
@@ -201,12 +201,14 @@
   .book-spine.book3{background:var(--indigo);}
   .book-spine.book4{background:var(--maroon);}
   .book-spine.book5{background:var(--brass);}
-  .book-spine.book6{
+  .book-spine.book6{background:#5C3D4E;}
+  .book-spine.book7{background:#2F5233;}
+  .book-spine.book8{
     background:repeating-linear-gradient(135deg, #8a8578, #8a8578 6px, #7d7869 6px, #7d7869 12px);
     color:var(--vellum);
     opacity:.85;
   }
-  .book-spine.book6 .spine-title{font-style:italic;}
+  .book-spine.book8 .spine-title{font-style:italic;}
 
   .bookshelf-tiers{display:flex;flex-direction:column;gap:18px;}
 
@@ -322,6 +324,13 @@
   .biome-card img{width:100%;border-radius:2px;filter:sepia(.25) saturate(.9);display:block;margin-bottom:8px;}
   .biome-card h4{font-family:'Fraunces', serif;font-size:14.5px;margin:0 0 4px;font-weight:500;}
   .biome-card p{font-size:13px;line-height:1.6;margin:0;}
+  .comparison-grid{
+    display:grid;grid-template-columns:repeat(2, 1fr);gap:14px;margin:16px 0 20px;
+  }
+  .comparison-grid figure{margin:0;}
+  .comparison-grid figure img{height:260px;object-fit:cover;}
+  .comparison-grid figcaption{font-size:12px;font-style:italic;color:var(--ink-soft);margin-top:6px;text-align:center;}
+  @media (max-width:600px){ .comparison-grid{grid-template-columns:1fr;} .comparison-grid figure img{height:auto;} }
 
   .summary-table-wrap{overflow-x:auto;margin:14px 0 20px;border:1px solid var(--hairline);border-radius:4px;}
   table.summary-table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--vellum);}
@@ -357,6 +366,15 @@
   .track-item.playing .track-icon{background:var(--brass);color:var(--bg);}
   .track-item .track-title{font-size:15px;}
   .track-item.playing .track-title{color:var(--herbarium);font-weight:600;}
+
+  /* ---------- Fallback gambar gagal muat ---------- */
+  .img-fallback{
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    min-height:120px;padding:12px;margin-bottom:8px;
+    border:1px dashed var(--hairline);border-radius:2px;
+    background:var(--vellum);color:var(--ink-soft);
+    font-size:12.5px;font-style:italic;
+  }
 </style>
 </head>
 <body>
@@ -424,18 +442,26 @@
             <span class="roman">III</span>
             <span class="spine-title">Keanekaragaman Flora</span>
           </button>
-        </div>
-        <div class="shelf-tier">
           <button class="book-spine book4" data-modal="modalBook4">
             <span class="roman">IV</span>
             <span class="spine-title">Keanekaragaman Fauna di Indonesia</span>
           </button>
+        </div>
+        <div class="shelf-tier">
           <button class="book-spine book5" data-modal="modalBook5">
             <span class="roman">V</span>
             <span class="spine-title">Manfaat Keanekaragaman Hayati</span>
           </button>
           <button class="book-spine book6" data-modal="modalBook6">
             <span class="roman">VI</span>
+            <span class="spine-title">Menghilangnya Keanekaragaman Hayati</span>
+          </button>
+          <button class="book-spine book7" data-modal="modalBook7">
+            <span class="roman">VII</span>
+            <span class="spine-title">Usaha Pelestarian Keanekaragaman Hayati</span>
+          </button>
+          <button class="book-spine book8" data-modal="modalBook8">
+            <span class="roman">VIII</span>
             <span class="spine-title">??? — segera terbit</span>
           </button>
         </div>
@@ -812,17 +838,212 @@
     </div>
   </div>
 
-  <!-- ============ MODAL: BOOK 6 (coming soon) ============ -->
+  <!-- ============ MODAL: BOOK 6 — Menghilangnya Keanekaragaman Hayati ============ -->
   <div class="modal-overlay" id="modalBook6">
     <div class="modal-box">
+      <svg class="modal-watermark" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 80 C 30 60, 30 30, 60 10"/>
+        <path d="M20 60 C 30 55, 38 46, 34 38 Z"/>
+        <path d="M35 40 C 45 35, 53 26, 49 18 Z"/>
+      </svg>
       <div class="modal-head">
-        <h2>VI. ???</h2>
+        <h2>VI. Menghilangnya Keanekaragaman Hayati</h2>
+        <button class="modal-close" data-close>&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <h3>Faktor Penyebab Hilangnya Keanekaragaman Hayati</h3>
+        <p>Seperti catatan sejarah yang mencatat kejayaan sekaligus keruntuhan, bab ini mencatat bagaimana keanekaragaman hayati bumi perlahan menyusut. Setidaknya ada enam faktor utama di baliknya.</p>
+        <p><strong>1. Hilangnya Habitat</strong> — terjadi ketika lingkungan alami suatu spesies, seperti hutan, rawa, atau padang rumput, diubah fungsinya menjadi lahan pertanian, permukiman, atau kawasan industri. Ketika habitat hilang, hewan dan tumbuhan yang bergantung padanya kehilangan tempat mencari makan, berlindung, dan berkembang biak. Inilah faktor tunggal paling besar penyebab penurunan populasi spesies di seluruh dunia, termasuk di Indonesia akibat deforestasi hutan tropis.</p>
+
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Amazon_deforestation_2010214.jpg" alt="Deforestasi hutan Amazon">
+          <figcaption>Fig. — Deforestasi di Rondônia, Brasil, dilihat dari satelit NASA</figcaption>
+        </figure>
+        <p><strong>2. Pencemaran Tanah, Udara, dan Air</strong> — terjadi ketika zat berbahaya seperti limbah industri, pestisida, plastik, atau asap kendaraan masuk ke lingkungan dan mengganggu keseimbangan ekosistem. Tanah yang tercemar logam berat sulit ditumbuhi tanaman, air yang tercemar limbah membunuh ikan dan plankton, sementara udara yang tercemar dapat merusak paru-paru hewan maupun tumbuhan. Dampaknya sering tidak langsung terlihat, tetapi terakumulasi dan merusak rantai makanan dalam jangka panjang.</p>
+
+        <figure>
+          <img src="assets/images/materi/pencemaran-lingkungan.jpg" alt="Contoh pencemaran tanah, udara, dan air">
+          <figcaption>Fig. — Contoh pencemaran lingkungan sebagai ancaman terhadap keanekaragaman hayati</figcaption>
+        </figure>
+        <p><strong>3. Perubahan Iklim</strong> — akibat meningkatnya gas rumah kaca, suhu bumi naik, pola cuaca menjadi tidak menentu, dan es di kutub maupun gletser mencair. Banyak spesies tidak mampu beradaptasi secepat perubahan yang terjadi — misalnya hewan kutub yang kehilangan habitat es, atau katak pegunungan yang habitatnya menghangat sehingga jamur penyakit lebih mudah berkembang. Perubahan iklim juga menggeser musim berbunga dan berbuah tumbuhan, mengacaukan hubungannya dengan hewan penyerbuk.</p>
+
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Melting_glacier_1.jpg" alt="Gletser Sólheimajökull yang mencair di Islandia">
+          <figcaption>Fig. — Gletser Sólheimajökull, Islandia, yang terus menyusut akibat pemanasan global</figcaption>
+        </figure>
+        <p><strong>4. Eksploitasi Tumbuhan dan Hewan</strong> — terjadi ketika manusia mengambil sumber daya hayati, baik lewat perburuan, penangkapan ikan, maupun penebangan, dengan laju lebih cepat daripada kemampuan populasi tersebut untuk pulih. Perdagangan gading gajah dan cula badak adalah contoh klasik eksploitasi yang mendorong spesies besar ke ambang kepunahan, meski sudah dilindungi hukum internasional. Semakin langka suatu spesies, semakin tinggi pula nilai jualnya di pasar gelap — lingkaran yang justru mempercepat kepunahan.</p>
+
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ivory_trade.jpg" alt="Gading hasil perdagangan ilegal">
+          <figcaption>Fig. — Gading hasil sitaan dari perdagangan satwa ilegal</figcaption>
+        </figure>
+        <p><strong>5. Spesies Pendatang (Invasif)</strong> — organisme yang dibawa manusia ke suatu wilayah baru, sengaja maupun tidak, lalu berkembang biak tak terkendali karena tak punya predator alami di sana. Spesies asli sering kalah bersaing untuk makanan dan ruang hidup, atau bahkan dimangsa langsung oleh pendatang tersebut. Kodok tebu yang diintroduksi ke Australia tahun 1935 untuk mengendalikan hama tebu adalah contoh terkenal — alih-alih membasmi hama, kodok beracun ini malah meracuni predator asli yang mencoba memangsanya, dan populasinya kini mencapai jutaan ekor.</p>
+
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cane_toad_(Rhinella_marina)_(9575448703).jpg" alt="Kodok tebu, spesies invasif">
+          <figcaption>Fig. — Kodok tebu (Rhinella marina), salah satu spesies invasif paling terkenal di dunia</figcaption>
+        </figure>
+        <p><strong>6. Industrialisasi Pertanian dan Hutan</strong> — mengubah lahan yang tadinya beragam menjadi perkebunan monokultur, satu jenis tanaman ditanam dalam skala sangat luas, seperti kelapa sawit atau akasia. Monokultur menyediakan jauh lebih sedikit variasi makanan dan tempat tinggal dibanding hutan alami, sehingga banyak spesies asli tidak bisa bertahan di sana. Di Indonesia, ekspansi perkebunan kelapa sawit menjadi salah satu penyebab utama menyusutnya habitat orangutan dan satwa hutan hujan tropis lainnya.</p>
+
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Oil_palm_plantation_in_Cigudeg-03.jpg" alt="Perkebunan kelapa sawit monokultur di Indonesia">
+          <figcaption>Fig. — Perkebunan kelapa sawit monokultur di Bogor, Indonesia</figcaption>
+        </figure>
+
+        <h3>Mengenal IUCN</h3>
+        <p><em class="term">IUCN</em> (International Union for Conservation of Nature) adalah organisasi konservasi internasional yang menyusun dan memperbarui <em class="term">IUCN Red List of Threatened Species</em> — daftar yang menilai status kelangkaan setiap spesies di dunia, mulai dari "Risiko Rendah" hingga "Punah". Status ini ditentukan dari data ilmiah seperti ukuran populasi, luas wilayah sebaran, dan laju penurunan populasi dari waktu ke waktu. Data IUCN inilah yang jadi rujukan utama pemerintah dan organisasi konservasi dunia untuk memutuskan spesies mana yang paling mendesak dilindungi.</p>
+
+        <h3>Jejak yang Ditinggalkan</h3>
+        <p>Berikut beberapa makhluk hidup yang telah punah — masing-masing punya kisah unik, dan hampir semuanya berkaitan langsung dengan faktor-faktor yang baru saja kita bahas.</p>
+
+        <div class="biome-grid">
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Frohawk_Dodo.png" alt="Ilustrasi burung Dodo">
+            <h4>Dodo</h4>
+            <p><em>Raphus cucullatus</em> — punah ±1681 di Mauritius. Tak bisa terbang dan tak takut manusia, telurnya dimangsa predator pendatang (babi, tikus) yang dibawa pelaut.</p>
+          </div>
+          <div class="biome-card">
+            <img src="assets/images/materi/bali-tiger.jpg" alt="Harimau Bali">
+            <h4>Harimau Bali</h4>
+            <p><em>Panthera tigris balica</em> — subspesies endemik Bali yang punah pada 1940-an akibat perburuan dan hilangnya habitat.</p>
+          </div>
+          <div class="biome-card">
+            <img src="assets/images/materi/javan-tiger.jpg" alt="Harimau Jawa">
+            <h4>Harimau Jawa</h4>
+            <p><em>Panthera tigris sondaica</em> — subspesies endemik Jawa yang dinyatakan punah pada 1980-an setelah kehilangan habitat dan mengalami tekanan perburuan.</p>
+          </div>
+          <div class="biome-card">
+            <img src="assets/images/materi/mangga-kasturi.jpg" alt="Mangga kasturi">
+            <h4>Mangga Kasturi</h4>
+            <p><em>Mangifera casturi</em> — tumbuhan endemik Kalimantan Selatan yang dinyatakan <em>Extinct in the Wild</em>; masih dipelihara melalui budidaya di luar habitat liarnya.</p>
+          </div>
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Martha,_a_Passenger_Pigeon.jpg" alt="Martha, burung merpati penumpang terakhir">
+            <h4>Merpati Penumpang</h4>
+            <p><em>Ectopistes migratorius</em> — punah 1914. Dulu berjumlah miliaran ekor, diburu besar-besaran untuk dijual sebagai daging murah hingga habis dalam beberapa dekade.</p>
+          </div>
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Thylacine_at_Beaumaris_Zoo,_1936_(NS4371-1-1063).jpg" alt="Thylacine di Kebun Binatang Beaumaris">
+            <h4>Harimau Tasmania</h4>
+            <p><em>Thylacinus cynocephalus</em> — punah 1936. Diburu habis-habisan karena dianggap predator ternak, ditambah hilangnya habitat.</p>
+          </div>
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Quagga_photo.jpg" alt="Foto quagga hidup, satu dari lima foto yang pernah dibuat">
+            <h4>Quagga</h4>
+            <p><em>Equus quagga quagga</em> — punah 1883. Subspesies zebra Afrika Selatan; hanya ada 5 foto quagga hidup di dunia, salah satunya ini.</p>
+          </div>
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Chinese_Baiji_dolphin_specimen_Qi_Qi.jpg" alt="Spesimen lumba-lumba Baiji, Qi Qi">
+            <h4>Lumba-lumba Baiji</h4>
+            <p><em>Lipotes vexillifer</em> — punah fungsional ±2006. Habitatnya di Sungai Yangtze rusak oleh lalu lintas kapal, pencemaran, dan bendungan.</p>
+          </div>
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bufo_periglenes2.jpg" alt="Katak emas jantan">
+            <h4>Katak Emas</h4>
+            <p><em>Incilius periglenes</em> — terakhir terlihat 1989 di Kosta Rika. Jadi "wajah" krisis kepunahan amfibi global akibat perubahan iklim.</p>
+          </div>
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Woolly_Mammoth-RBC.jpg" alt="Rekonstruksi mamut berbulu">
+            <h4>Mamut Berbulu</h4>
+            <p><em>Mammuthus primigenius</em> — punah ±4.000 tahun lalu. Contoh kepunahan zaman es akibat perubahan iklim dan perburuan manusia purba.</p>
+          </div>
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Celia_la_%C3%BAltima_bucardo.JPG" alt="Celia, bucardo terakhir">
+            <h4>Bucardo</h4>
+            <p><em>Capra pyrenaica pyrenaica</em> — individu terakhir, Celia (foto ini), mati 2000. Kisahnya berlanjut di Buku VII.</p>
+          </div>
+          <div class="biome-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Franklin_Tree_Franklinia_alatamaha_Flower_3008px.JPG" alt="Bunga Franklinia">
+            <h4>Franklinia</h4>
+            <p><em>Franklinia alatamaha</em> — punah di alam liar sejak ±1803. Untung bijinya sempat diselamatkan seorang botanis, kini hidup di kebun raya.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: BOOK 7 — Usaha Pelestarian Keanekaragaman Hayati ============ -->
+  <div class="modal-overlay" id="modalBook7">
+    <div class="modal-box">
+      <svg class="modal-watermark" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 80 C 30 60, 30 30, 60 10"/>
+        <path d="M20 60 C 30 55, 38 46, 34 38 Z"/>
+        <path d="M35 40 C 45 35, 53 26, 49 18 Z"/>
+      </svg>
+      <div class="modal-head">
+        <h2>VII. Usaha Pelestarian Keanekaragaman Hayati</h2>
+        <button class="modal-close" data-close>&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <h3>Pengertian Konservasi</h3>
+        <p><em class="term">Konservasi</em> adalah upaya pengelolaan sumber daya alam hayati secara bijaksana untuk menjamin kesinambungan persediaannya, sambil tetap memelihara dan meningkatkan kualitas keanekaragamannya. Ada dua pendekatan utama: <em class="term">in situ</em> dan <em class="term">ex situ</em>.</p>
+
+        <h3>Konservasi In Situ</h3>
+        <p>Konservasi <em class="term">in situ</em> adalah pelestarian yang dilakukan langsung di habitat asli spesies tersebut. Pendekatan ini mempertahankan seluruh ekosistem tempat spesies hidup, termasuk interaksinya dengan spesies lain, sehingga proses ekologis dan evolusi alami tetap berjalan.</p>
+        <p><strong>Contoh:</strong> Taman Nasional Komodo di Nusa Tenggara Timur melindungi komodo (<em>Varanus komodoensis</em>) tetap di habitat asalnya; Taman Nasional Way Kambas di Lampung melindungi gajah dan badak Sumatra langsung di hutan tempat mereka hidup.</p>
+        <figure>
+          <img src="assets/images/materi/konservasi-in-situ-komodo.jpg" alt="Komodo di habitat alaminya">
+          <figcaption>Fig. — Contoh konservasi <em>in situ</em>: komodo (<em>Varanus komodoensis</em>) dilindungi di habitat alaminya</figcaption>
+        </figure>
+        <p>Konservasi in situ dipilih ketika habitat asli masih cukup luas dan terjaga, serta ketika mempertahankan interaksi ekologis alami menjadi prioritas — karena memindahkan spesies keluar habitatnya bisa mengganggu peran pentingnya dalam ekosistem.</p>
+
+        <h3>Konservasi Ex Situ</h3>
+        <p>Konservasi <em class="term">ex situ</em> adalah pelestarian yang dilakukan di luar habitat asli spesies — misalnya di kebun binatang, kebun raya, akuarium, atau bank benih/bank gen. Pendekatan ini memungkinkan pengawasan dan penanganan lebih intensif, cocok untuk spesies dengan populasi sangat kritis.</p>
+        <p><strong>Contoh:</strong> penangkaran jalak Bali (<em>Leucopsar rothschildi</em>) di berbagai kebun binatang untuk kemudian dilepasliarkan kembali; Kebun Raya Bogor yang menyimpan koleksi hidup ribuan spesies tumbuhan langka Indonesia, termasuk bibit yang disiapkan untuk restorasi hutan.</p>
+        <figure>
+          <img src="assets/images/materi/konservasi-ex-situ-kebun-raya.jpg" alt="Koleksi tumbuhan di kebun raya sebagai konservasi ex situ">
+          <figcaption>Fig. — Contoh konservasi <em>ex situ</em>: koleksi tumbuhan di kebun raya di luar habitat aslinya</figcaption>
+        </figure>
+        <p>Konservasi ex situ dipilih ketika habitat asli sudah terlalu rusak atau populasi liarnya sudah sangat kritis, sehingga memindahkan sebagian populasi ke lingkungan terkendali menjadi jaring pengaman terakhir sebelum spesies itu hilang selamanya.</p>
+
+        <h3>Usaha Membangkitkan Hewan dari Kepunahan</h3>
+        <p>Selain mencegah kepunahan, ilmuwan modern juga mengembangkan teknologi untuk "menghidupkan kembali" spesies yang sudah punah — disebut <em class="term">de-extinction</em>. Bidang ini masih sangat baru dan penuh perdebatan. Berikut tiga studi kasus nyata yang menunjukkan bagaimana usaha ini benar-benar berjalan.</p>
+
+        <figure>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Celia_la_%C3%BAltima_bucardo.JPG" alt="Celia, bucardo terakhir yang selnya digunakan untuk kloning">
+          <figcaption>Fig. — Celia, bucardo terakhir, yang selnya dibekukan sebelum ia mati tahun 2000</figcaption>
+        </figure>
+        <p><strong>Kasus 1 — Bucardo (2003):</strong> kasus de-extinction pertama dalam sejarah terjadi pada bucardo yang kita kenal di Buku VI. Sebelum Celia, individu terakhir, mati tahun 2000, ilmuwan sempat membekukan sel dari tubuhnya. Tahun 2003, tim ilmuwan Spanyol dan Prancis menyuntikkan inti sel tersebut ke sel telur kambing domestik lewat teknik kloning — mirip yang dipakai untuk domba Dolly — lalu menanamkannya ke induk pengganti. Seekor anak bucardo klon lahir hidup-hidup: kepunahan pertama yang "dibalik" dalam sejarah sains. Namun ia meninggal hanya beberapa menit setelah lahir akibat cacat paru-paru. Bucardo pun kembali punah, kali ini untuk kedua kalinya.</p>
+
+        <p><strong>Kasus 2 — "Dire Wolf" (April 2025):</strong> kasus paling ramai diperbincangkan datang dari perusahaan bioteknologi Colossal Biosciences. Mereka mengumumkan kelahiran tiga anak serigala yang diklaim sebagai dire wolf (<em>Aenocyon dirus</em>) — spesies serigala raksasa yang punah sekitar 10.000 tahun lalu dan populer lewat serial <em>Game of Thrones</em>. Ilmuwan Colossal mengekstrak DNA dari fosil gigi berusia 13.000 tahun dan tengkorak berusia 72.000 tahun, membandingkannya dengan DNA serigala abu-abu (kerabat terdekatnya yang masih hidup), lalu menyunting 14 gen serigala abu-abu di 20 titik menggunakan teknologi CRISPR agar menyerupai ciri fisik dire wolf, seperti tubuh lebih besar dan bulu putih tebal.</p>
+        <p>Klaim ini menuai kritik keras dari banyak ilmuwan lain. Mereka menegaskan hewan hasil rekayasa ini secara genetik tetaplah serigala abu-abu dengan sejumlah gen yang diubah — bukan dire wolf sesungguhnya, karena DNA fosil yang tersisa terlalu rusak untuk direkonstruksi secara utuh. Colossal sendiri kemudian menyebut pencapaiannya sebagai <em class="term">"de-extinction fungsional"</em> — menciptakan hewan yang secara fisik dan fungsi ekologis mirip spesies punah, bukan replika genetik sempurna.</p>
+        <div class="comparison-grid">
+          <figure>
+            <img src="assets/images/materi/dire-wolf-asli.jpg" alt="Dire wolf asli berdasarkan rekonstruksi atau referensi spesies">
+            <figcaption>Fig. — Dire wolf (<em>Aenocyon dirus</em>) berdasarkan rekonstruksi atau referensi spesies yang telah punah</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/materi/dire-wolf-romulus-remus-khaleesi.jpg" alt="Romulus, Remus, dan Khaleesi">
+            <figcaption>Fig. — Romulus, Remus, dan Khaleesi, tiga anak serigala hasil proyek de-extinction Colossal</figcaption>
+          </figure>
+        </div>
+
+        <p><strong>Kasus 3 — Mamut &amp; Harimau Tasmania (masih berjalan):</strong> Colossal juga tengah mengerjakan dua proyek besar yang belum tuntas: menghidupkan kembali mamut berbulu (dengan menyisipkan gen mamut ke embrio gajah Asia, kerabat terdekatnya) dan harimau Tasmania (menggunakan DNA dari spesimen yang diawetkan). Sebagai langkah awal menuju mamut, pada 2025 Colossal berhasil menciptakan "tikus berbulu" (woolly mice) — tikus laboratorium biasa yang gennya disunting agar berbulu tebal keemasan dan tahan dingin, sebagai bukti konsep bahwa sifat-sifat mirip mamut bisa direkayasa secara genetik sebelum dicoba pada gajah sungguhan.</p>
+        <figure>
+          <img src="assets/images/materi/woolly-mice.jpg" alt="Woolly mice hasil rekayasa genetik">
+          <figcaption>Fig. — Woolly mice, tikus laboratorium dengan sejumlah sifat terkait adaptasi dingin hasil rekayasa genetik</figcaption>
+        </figure>
+
+        <p style="font-style:italic;color:var(--ink-soft);border-left:3px solid var(--brass);padding-left:14px;margin-top:18px;">Perdebatan soal de-extinction bukan cuma soal "bisa atau tidak", tapi juga soal prioritas: sebagian ilmuwan berpendapat dana besar untuk riset semacam ini akan lebih bermanfaat jika dialihkan untuk melindungi spesies yang masih hidup tapi terancam punah, ketimbang mencoba membangkitkan yang sudah lama hilang.</p>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: BOOK 8 (coming soon) ============ -->
+  <div class="modal-overlay" id="modalBook8">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h2>VIII. ???</h2>
         <button class="modal-close" data-close>&times;</button>
       </div>
       <div class="coming-soon-body">
         <p>Halaman-halaman buku ini belum selesai disalin.<br>
-        Odey masih menjelajah untuk mengumpulkan bab berikutnya —<br>
-        kembali lagi nanti untuk melihat isinya.</p>
+        Menurut catatan yang sempat terbaca, buku ini akan membahas <strong>Klasifikasi Makhluk Hidup</strong> — bagaimana ilmuwan mengelompokkan jutaan spesies di bumi ke dalam sistem takson.<br>
+        Odey masih menjelajah untuk mengumpulkan bab ini — kembali lagi nanti.</p>
       </div>
     </div>
   </div>
@@ -895,6 +1116,24 @@
   </div>
 
   <script>
+    // ---------- Perbaikan gambar Wikimedia ----------
+    document.querySelectorAll('img[src*="commons.wikimedia.org/wiki/Special:FilePath/"]').forEach(function(img){
+      var s = img.getAttribute('src');
+      if(s.indexOf('?') === -1) img.setAttribute('src', s + '?width=800'); // thumbnail, bukan file asli
+      img.referrerPolicy = 'no-referrer';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+    });
+    // Fallback untuk semua gambar (Wikimedia maupun lokal) yang gagal dimuat
+    document.querySelectorAll('.modal-body img').forEach(function(img){
+      img.addEventListener('error', function(){
+        var ph = document.createElement('div');
+        ph.className = 'img-fallback';
+        ph.textContent = '\ud83d\uddbc ' + (img.alt || 'Gambar belum tersedia');
+        img.replaceWith(ph);
+      });
+    });
+
     // Buka modal dari tombol buku / TV
     document.querySelectorAll('[data-modal]').forEach(function(btn){
       btn.addEventListener('click', function(){
